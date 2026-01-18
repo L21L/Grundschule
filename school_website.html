@@ -189,6 +189,10 @@
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 Grundschule Hardt | Alle Rechte vorbehalten</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link" onclick="openImpressum(event)">Impressum</a>
+                <a href="#" class="footer-link" onclick="openDatenschutz(event)">Datenschutz</a>
+            </div>
         </div>
     </footer>
 
@@ -199,6 +203,82 @@
             <div class="modal-icon" id="modalIcon"></div>
             <h3 id="modalTitle"></h3>
             <p id="modalText"></p>
+        </div>
+    </div>
+
+    <!-- Impressum Modal -->
+    <div class="modal" id="impressumModal">
+        <div class="info-modal-content">
+            <button class="close-button" onclick="closeImpressum()">✕</button>
+            <h3>Impressum</h3>
+            <h4>Angaben gemäß § 5 TMG</h4>
+            <p>
+                Grundschule Hardt<br>
+                Szekesfehervarer Str. 12<br>
+                73525 Schwäbisch Gmünd<br>
+                Deutschland
+            </p>
+            
+            <h4>Vertreten durch</h4>
+            <p>Schulleitung: [Name der Schulleitung]</p>
+            
+            <h4>Kontakt</h4>
+            <p>
+                Telefon: +49 (0) 7171 / 66 92 9<br>
+                Fax: +49 (0) 7171 / 37 58 8<br>
+                E-Mail: <a href="mailto:poststelle@04164951.schule.bwl.de">poststelle@04164951.schule.bwl.de</a>
+            </p>
+            
+            <h4>Aufsichtsbehörde</h4>
+            <p>
+                Staatliches Schulamt Göppingen<br>
+                Burgstraße 4<br>
+                73033 Göppingen
+            </p>
+            
+            <h4>Haftungsausschluss</h4>
+            <p>
+                Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.
+            </p>
+        </div>
+    </div>
+
+    <!-- Datenschutz Modal -->
+    <div class="modal" id="datenschutzModal">
+        <div class="info-modal-content">
+            <button class="close-button" onclick="closeDatenschutz()">✕</button>
+            <h3>Datenschutzerklärung</h3>
+            
+            <h4>1. Datenschutz auf einen Blick</h4>
+            <p>
+                Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen.
+            </p>
+            
+            <h4>2. Allgemeine Hinweise</h4>
+            <p>
+                Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.
+            </p>
+            
+            <h4>3. Datenerfassung auf dieser Website</h4>
+            <p>
+                Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.
+            </p>
+            
+            <h4>4. Ihre Rechte</h4>
+            <p>Sie haben jederzeit das Recht:</p>
+            <ul>
+                <li>Auskunft über Ihre bei uns gespeicherten Daten zu erhalten</li>
+                <li>Berichtigung unrichtiger Daten zu verlangen</li>
+                <li>Löschung Ihrer Daten zu verlangen</li>
+                <li>Einschränkung der Datenverarbeitung zu verlangen</li>
+                <li>Widerspruch gegen die Verarbeitung einzulegen</li>
+            </ul>
+            
+            <h4>5. Kontakt</h4>
+            <p>
+                Bei Fragen zum Datenschutz wenden Sie sich bitte an:<br>
+                E-Mail: <a href="mailto:poststelle@04164951.schule.bwl.de">poststelle@04164951.schule.bwl.de</a>
+            </p>
         </div>
     </div>
 
