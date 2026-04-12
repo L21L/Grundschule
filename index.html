@@ -321,7 +321,14 @@ nav a:hover::after,nav a.active::after{width:100%}
             if (isGray || (!last.date && /^\d{1,2}\.\s/.test(text) && text.length < 30)) {
               last.date = text;
             } else {
-              last.body += (last.body ? ' ' : '') + text;
+              // If the last item has no title (was a bare paragraph), and this section
+              // uses bare paragraphs as individual items, create a new item
+              var isListSection = /Termine|Zahlen|Kontakt|ffnungszeiten/.test(currentSection);
+              if (isListSection && last.title === '' && last.body !== '') {
+                currentItems.push({ title: '', body: text, date: '' });
+              } else {
+                last.body += (last.body ? ' ' : '') + text;
+              }
             }
           } else {
             currentItems.push({ title: '', body: text, date: '' });
