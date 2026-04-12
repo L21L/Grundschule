@@ -110,6 +110,13 @@ nav a:hover::after,nav a.active::after{width:100%}
 .footer-bottom a{color:var(--green-200);text-decoration:none;margin-left:1.5rem}
 .footer-bottom a:hover{color:#fff}
 
+/* Read more / less */
+.text-preview{display:inline}
+.text-rest{display:none}
+.text-rest.open{display:inline}
+.read-toggle{display:inline;background:none;border:none;color:var(--green-700);font-weight:600;font-size:.88rem;cursor:pointer;padding:0;margin-left:4px;font-family:inherit;transition:color .2s}
+.read-toggle:hover{color:var(--purple-600)}
+
 @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:768px){
@@ -323,6 +330,21 @@ nav a:hover::after,nav a.active::after{width:100%}
       });
       if (currentSection) sections[currentSection] = currentItems;
 
+      // Helper: split text after 2 sentences, return HTML with toggle
+      var toggleId = 0;
+      function truncatedHtml(text) {
+        if (!text) return '';
+        // Split on sentence endings (. ! ?) followed by a space and uppercase letter
+        var sentences = text.match(/[^.!?]*[.!?]+(\s|$)/g);
+        if (!sentences || sentences.length <= 2) return '<p>' + text + '</p>';
+        var preview = sentences.slice(0, 2).join('').trim();
+        var rest = sentences.slice(2).join('').trim();
+        var id = 'toggle-' + (toggleId++);
+        return '<p><span class="text-preview">' + preview + '</span>' +
+          '<span class="text-rest" id="' + id + '"> ' + rest + '</span>' +
+          '<button class="read-toggle" onclick="var r=document.getElementById(\'' + id + '\');var open=r.classList.toggle(\'open\');this.textContent=open?\' weniger \u25B4\':\' mehr \u25BE\';"> mehr \u25BE</button></p>';
+      }
+
       // Schulleben
       var schlKey = Object.keys(sections).find(function(k) { return k.includes('Schulleben'); });
       if (schlKey) {
@@ -334,7 +356,7 @@ nav a:hover::after,nav a.active::after{width:100%}
           div.className = 'timeline-item';
           var html = '<h4>' + item.title + '</h4>';
           if (item.date) html += '<div class="date">' + item.date + '</div>';
-          html += '<p>' + item.body + '</p>';
+          html += truncatedHtml(item.body);
           div.innerHTML = html;
           container.appendChild(div);
           observer.observe(div);
@@ -370,7 +392,7 @@ nav a:hover::after,nav a.active::after{width:100%}
         sections[schuleKey].forEach(function(item) {
           var div = document.createElement('div');
           div.className = 'school-section';
-          div.innerHTML = '<h4>' + item.title + '</h4><p>' + item.body + '</p>';
+          div.innerHTML = '<h4>' + item.title + '</h4>' + truncatedHtml(item.body);
           sc.appendChild(div);
           observer.observe(div);
         });
