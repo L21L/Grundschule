@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grundschule Hardt</title>
+<title>Grundschule Hardt - Schwäbisch Gmünd</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -20,186 +20,187 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--font-body);color:var(--text);background:var(--cream);line-height:1.7;font-weight:400;font-size:17px}
 
-/* ─── Loading screen ─── */
 #loading{position:fixed;inset:0;background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s}
 #loading.hidden{opacity:0;pointer-events:none}
 .loader-leaf{width:48px;height:48px;animation:spin 2s ease-in-out infinite}
 @keyframes spin{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.1)}100%{transform:rotate(360deg) scale(1)}}
 
-/* ─── Header ─── */
-header{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2.5rem;display:flex;justify-content:space-between;align-items:center;background:rgba(250,249,246,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(46,125,50,.08);transition:box-shadow .3s}
+header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,249,246,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(46,125,50,.08);transition:box-shadow .3s}
 header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.06)}
-.logo{display:flex;align-items:center;gap:14px}
+.header-inner{max-width:1100px;margin:0 auto;padding:.9rem 2rem;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:14px;text-decoration:none}
 .logo-icon{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--green-400),var(--purple-400));display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.logo-text h1{font-family:var(--font-display);font-size:1.35rem;font-weight:500;color:var(--green-700);line-height:1.2}
-.logo-text span{font-size:.7rem;color:var(--purple-600);letter-spacing:3px;text-transform:uppercase}
-nav{display:flex;gap:2rem}
-nav a{text-decoration:none;font-size:.9rem;color:var(--text-light);font-weight:500;position:relative;transition:color .3s}
-nav a:hover{color:var(--green-700)}
-nav a::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:2px;background:linear-gradient(90deg,var(--green-400),var(--purple-400));transition:width .3s}
-nav a:hover::after{width:100%}
+.logo-text h1{font-family:var(--font-display);font-size:1.3rem;font-weight:500;color:var(--green-700);line-height:1.2}
+.logo-text span{font-size:.65rem;color:var(--purple-600);letter-spacing:2.5px;text-transform:uppercase}
 
-/* ─── Hero ─── */
-.hero{padding:10rem 2.5rem 6rem;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--green-50) 0%,var(--purple-50) 45%,var(--green-50) 100%);min-height:80vh;display:flex;align-items:center}
-.hero-content{max-width:680px;position:relative;z-index:2}
-.hero h2{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:500;color:var(--green-800);line-height:1.15;margin-bottom:1rem;opacity:0;transform:translateY(30px);animation:fadeUp .8s .3s forwards}
-.hero .subtitle{font-size:1.15rem;color:var(--text-light);max-width:480px;line-height:1.8;opacity:0;transform:translateY(20px);animation:fadeUp .8s .5s forwards}
-.hero-cta{margin-top:2.5rem;display:flex;gap:14px;flex-wrap:wrap;opacity:0;transform:translateY(20px);animation:fadeUp .8s .7s forwards}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--green-600),var(--green-700));color:#fff;padding:14px 32px;border-radius:32px;text-decoration:none;font-weight:500;font-size:.95rem;transition:transform .2s,box-shadow .3s;box-shadow:0 4px 16px rgba(46,125,50,.2)}
+nav{display:flex;gap:1.8rem}
+nav a{text-decoration:none;font-size:.88rem;color:var(--text-light);font-weight:500;position:relative;transition:color .3s}
+nav a:hover,nav a.active{color:var(--green-700)}
+nav a::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:2px;background:linear-gradient(90deg,var(--green-400),var(--purple-400));transition:width .3s}
+nav a:hover::after,nav a.active::after{width:100%}
+
+.hero{padding:9rem 2rem 5rem;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--green-50) 0%,var(--purple-50) 45%,var(--green-50) 100%);min-height:75vh;display:flex;align-items:center}
+.hero-content{max-width:700px;position:relative;z-index:2}
+.hero-label{font-size:.8rem;color:var(--purple-600);text-transform:uppercase;letter-spacing:2.5px;font-weight:600;margin-bottom:.8rem;opacity:0;transform:translateY(20px);animation:fadeUp .7s .2s forwards}
+.hero h2{font-family:var(--font-display);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:500;color:var(--green-800);line-height:1.15;margin-bottom:.5rem;opacity:0;transform:translateY(30px);animation:fadeUp .8s .3s forwards}
+.hero h3{font-family:var(--font-display);font-size:clamp(1.1rem,2vw,1.5rem);font-weight:500;color:var(--purple-700);line-height:1.4;margin-bottom:1.5rem;opacity:0;transform:translateY(25px);animation:fadeUp .8s .45s forwards}
+.hero .subtitle{font-size:1.05rem;color:var(--text-light);max-width:520px;line-height:1.8;opacity:0;transform:translateY(20px);animation:fadeUp .8s .55s forwards}
+.hero-cta{margin-top:2rem;display:flex;gap:14px;flex-wrap:wrap;opacity:0;transform:translateY(20px);animation:fadeUp .8s .7s forwards}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--green-600),var(--green-700));color:#fff;padding:13px 28px;border-radius:28px;text-decoration:none;font-weight:500;font-size:.92rem;transition:transform .2s,box-shadow .3s;box-shadow:0 4px 16px rgba(46,125,50,.2)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(46,125,50,.3)}
-.btn-secondary{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--purple-200);color:var(--purple-700);padding:12px 28px;border-radius:32px;text-decoration:none;font-weight:500;font-size:.95rem;transition:all .2s}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--purple-200);color:var(--purple-700);padding:11px 24px;border-radius:28px;text-decoration:none;font-weight:500;font-size:.92rem;transition:all .2s}
 .btn-secondary:hover{background:var(--purple-50);border-color:var(--purple-400)}
 
-/* Decorative blobs */
-.blob{position:absolute;border-radius:50%;opacity:.08;pointer-events:none}
-.blob-1{width:500px;height:500px;background:var(--green-400);top:-100px;right:-100px;animation:float 12s ease-in-out infinite}
-.blob-2{width:350px;height:350px;background:var(--purple-400);bottom:-50px;left:-80px;animation:float 15s ease-in-out 3s infinite}
-.blob-3{width:200px;height:200px;background:var(--green-200);top:40%;left:55%;animation:float 10s ease-in-out 1s infinite}
+.blob{position:absolute;border-radius:50%;opacity:.07;pointer-events:none}
+.blob-1{width:450px;height:450px;background:var(--green-400);top:-80px;right:-80px;animation:float 12s ease-in-out infinite}
+.blob-2{width:300px;height:300px;background:var(--purple-400);bottom:-40px;left:-60px;animation:float 15s ease-in-out 3s infinite}
+.blob-3{width:180px;height:180px;background:var(--green-200);top:35%;left:55%;animation:float 10s ease-in-out 1s infinite}
 @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-15px) scale(1.05)}66%{transform:translate(-10px,10px) scale(.97)}}
 
-/* ─── Wave dividers ─── */
 .wave-divider{width:100%;overflow:hidden;line-height:0;position:relative;z-index:3}
 .wave-divider svg{display:block;width:100%;height:auto}
-.wave-green-to-white svg path{fill:var(--warm-white)}
-.wave-white-to-purple svg path{fill:var(--purple-50)}
-.wave-purple-to-white svg path{fill:var(--warm-white)}
-.wave-white-to-green svg path{fill:var(--green-50)}
-.wave-green-to-cream svg path{fill:var(--cream)}
-.wave-cream-to-green svg path{fill:var(--green-50)}
 
-/* ─── Sections ─── */
-.section{padding:5rem 2.5rem}
+.section{padding:4.5rem 2rem}
 .section-inner{max-width:820px;margin:0 auto}
-
 .bg-white{background:var(--warm-white)}
 .bg-green{background:var(--green-50)}
 .bg-purple{background:var(--purple-50)}
-.bg-cream{background:var(--cream)}
+.section-label{font-size:.75rem;color:var(--purple-600);text-transform:uppercase;letter-spacing:2.5px;font-weight:600;margin-bottom:1.5rem}
 
-/* ─── Scroll story (Aktuelles) ─── */
 .timeline{position:relative;padding-left:40px}
 .timeline::before{content:'';position:absolute;left:14px;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--green-400),var(--purple-400),var(--green-400));border-radius:3px}
-.timeline-item{position:relative;margin-bottom:3rem;opacity:0;transform:translateY(30px);transition:all .6s}
+.timeline-item{position:relative;margin-bottom:2.5rem;opacity:0;transform:translateY(30px);transition:all .6s}
 .timeline-item.visible{opacity:1;transform:translateY(0)}
 .timeline-item::before{content:'';position:absolute;left:-33px;top:6px;width:12px;height:12px;border-radius:50%;border:3px solid var(--green-400);background:var(--warm-white);z-index:1}
 .timeline-item:nth-child(even)::before{border-color:var(--purple-400)}
-.timeline-item h4{font-family:var(--font-display);font-size:1.3rem;font-weight:500;color:var(--green-800);margin-bottom:.4rem}
+.timeline-item h4{font-family:var(--font-display);font-size:1.2rem;font-weight:500;color:var(--green-800);margin-bottom:.2rem}
 .timeline-item:nth-child(even) h4{color:var(--purple-700)}
-.timeline-item p{color:var(--text-light);line-height:1.8;font-size:1rem}
-.section-label{font-size:.75rem;color:var(--purple-600);text-transform:uppercase;letter-spacing:2.5px;font-weight:600;margin-bottom:1.5rem}
+.timeline-item .date{font-size:.8rem;color:var(--purple-600);margin-bottom:.4rem;font-weight:500}
+.timeline-item p{color:var(--text-light);line-height:1.7;font-size:.95rem}
 
-/* ─── Unsere Schule ─── */
-.school-section{margin-bottom:3rem;opacity:0;transform:translateY(30px);transition:all .6s}
+.termin-item{display:flex;align-items:baseline;gap:16px;padding:.8rem 0;border-bottom:1px solid rgba(46,125,50,.08);opacity:0;transform:translateY(20px);transition:all .5s}
+.termin-item.visible{opacity:1;transform:translateY(0)}
+.termin-date{font-size:.82rem;color:var(--purple-600);font-weight:600;min-width:200px;flex-shrink:0}
+.termin-title{font-size:.95rem;color:var(--text);font-weight:500}
+
+.school-section{margin-bottom:2.5rem;opacity:0;transform:translateY(30px);transition:all .6s}
 .school-section.visible{opacity:1;transform:translateY(0)}
-.school-section h4{font-family:var(--font-display);font-size:1.3rem;font-weight:500;color:var(--purple-700);margin-bottom:.5rem}
-.school-section p{color:var(--text-light);line-height:1.8}
-.school-section+.school-section{padding-top:2.5rem;border-top:1px solid rgba(186,104,200,.12)}
+.school-section h4{font-family:var(--font-display);font-size:1.2rem;font-weight:500;color:var(--purple-700);margin-bottom:.5rem}
+.school-section p{color:var(--text-light);line-height:1.8;font-size:.95rem}
+.school-section+.school-section{padding-top:2rem;border-top:1px solid rgba(186,104,200,.1)}
 
-/* ─── Quote ─── */
-.quote-section{text-align:center;padding:6rem 2.5rem;position:relative}
-.quote-marks{font-family:var(--font-display);font-size:6rem;color:var(--green-200);line-height:0;opacity:.4;position:absolute;top:3.5rem;left:50%;transform:translateX(-50%)}
-.quote-text{font-family:var(--font-display);font-size:clamp(1.3rem,2.5vw,1.7rem);font-style:italic;color:var(--green-800);max-width:550px;margin:0 auto 1rem;line-height:1.5;position:relative;z-index:1}
-.quote-author{font-size:.9rem;color:var(--purple-600);font-weight:500}
+.quote-section{text-align:center;padding:5rem 2rem;position:relative}
+.quote-marks{font-family:var(--font-display);font-size:5rem;color:var(--green-200);line-height:0;opacity:.4;position:absolute;top:3rem;left:50%;transform:translateX(-50%)}
+.quote-text{font-family:var(--font-display);font-size:clamp(1.2rem,2.2vw,1.5rem);font-style:italic;color:var(--green-800);max-width:550px;margin:0 auto .8rem;line-height:1.5;position:relative;z-index:1}
+.quote-author{font-size:.85rem;color:var(--purple-600);font-weight:500}
 
-/* ─── Zahlen ─── */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2rem}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:1.5rem}
 .stat-item{text-align:center;opacity:0;transform:translateY(20px);transition:all .5s}
 .stat-item.visible{opacity:1;transform:translateY(0)}
-.stat-number{font-family:var(--font-display);font-size:2.8rem;font-weight:700;background:linear-gradient(135deg,var(--green-600),var(--purple-600));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat-label{font-size:.85rem;color:var(--text-light);margin-top:.3rem}
+.stat-number{font-family:var(--font-display);font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,var(--green-600),var(--purple-600));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:.82rem;color:var(--text-light);margin-top:.2rem}
 
-/* ─── Kontakt / Footer ─── */
-.footer{background:var(--green-800);color:var(--green-100);padding:4rem 2.5rem 2rem}
+.footer{background:var(--green-800);color:var(--green-100);padding:3.5rem 2rem 1.5rem}
 .footer-inner{max-width:820px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:3rem}
-.footer h3{font-family:var(--font-display);font-size:1.4rem;color:#fff;margin-bottom:1rem}
-.footer p{font-size:.95rem;line-height:1.8;color:var(--green-200)}
-.footer-bottom{max-width:820px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.1);font-size:.8rem;color:var(--green-200);text-align:center}
+.footer h3{font-family:var(--font-display);font-size:1.25rem;color:#fff;margin-bottom:.8rem}
+.footer p{font-size:.9rem;line-height:1.8;color:var(--green-200)}
+.footer a{color:var(--green-200);text-decoration:none;transition:color .2s}
+.footer a:hover{color:#fff}
+.footer-bottom{max-width:820px;margin:1.5rem auto 0;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,.1);font-size:.78rem;color:var(--green-200);display:flex;justify-content:space-between;align-items:center}
+.footer-bottom a{color:var(--green-200);text-decoration:none;margin-left:1.5rem}
+.footer-bottom a:hover{color:#fff}
 
-/* ─── Animations ─── */
 @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 
-/* ─── Responsive ─── */
 @media(max-width:768px){
-  header{padding:1rem 1.25rem}
+  .header-inner{padding:.8rem 1.25rem}
   nav{gap:1rem}
-  nav a{font-size:.8rem}
-  .hero{padding:8rem 1.5rem 4rem;min-height:auto}
+  nav a{font-size:.78rem}
+  .hero{padding:7rem 1.5rem 3.5rem;min-height:auto}
   .section{padding:3rem 1.5rem}
   .stats-grid{grid-template-columns:repeat(2,1fr);gap:1rem}
   .footer-inner{grid-template-columns:1fr}
   .timeline{padding-left:32px}
+  .termin-item{flex-direction:column;gap:2px}
+  .termin-date{min-width:auto}
+  .footer-bottom{flex-direction:column;gap:.5rem;text-align:center}
 }
-@media(max-width:480px){
-  nav{display:none}
-  .hero h2{font-size:2rem}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-}
+@media(max-width:480px){nav{display:none}.hero h2{font-size:2rem}}
 </style>
 </head>
 <body>
 
-<!-- Loading -->
 <div id="loading">
   <svg class="loader-leaf" viewBox="0 0 48 48"><path d="M24 4C18 4 8 16 8 28c0 8 7 16 16 16s16-8 16-16C40 16 30 4 24 4z" fill="#66bb6a" opacity=".7"/><path d="M24 12v28M16 22c4 2 8 2 12-1" fill="none" stroke="#2e7d32" stroke-width="2" stroke-linecap="round"/></svg>
   <p style="margin-top:1rem;color:var(--text-light);font-size:.9rem">Inhalte werden geladen...</p>
 </div>
 
-<!-- Header -->
 <header id="header">
-  <div class="logo">
-    <div class="logo-icon">
-      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 3C9 3 5 8 5 14c0 4 3 7 7 7s7-3 7-7C19 8 15 3 12 3z" fill="#fff" opacity=".85"/><path d="M12 8v12M9 13c2 1 4 1 6-.5" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </div>
-    <div class="logo-text">
-      <h1 id="school-name">Grundschule Hardt</h1>
-      <span id="school-motto">Natur erleben &ndash; Kultur entdecken</span>
-    </div>
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 3C9 3 5 8 5 14c0 4 3 7 7 7s7-3 7-7C19 8 15 3 12 3z" fill="#fff" opacity=".85"/><path d="M12 8v12M9 13c2 1 4 1 6-.5" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="logo-text">
+        <h1 id="school-name">Grundschule Hardt</h1>
+        <span>Schw&auml;bisch Gm&uuml;nd</span>
+      </div>
+    </a>
+    <nav>
+      <a href="#hero" class="active">Start</a>
+      <a href="#schulleben">Aktuelles</a>
+      <a href="#schule">Unsere Schule</a>
+      <a href="#termine-section">Termine</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
   </div>
-  <nav>
-    <a href="#aktuelles">Aktuelles</a>
-    <a href="#schule">Unsere Schule</a>
-    <a href="#zahlen">Zahlen</a>
-    <a href="#kontakt">Kontakt</a>
-  </nav>
 </header>
 
-<!-- Hero -->
 <section class="hero" id="hero">
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
   <div class="hero-content">
-    <h2 id="hero-headline">Herzlich willkommen bei der Grundschule Hardt</h2>
-    <p class="subtitle" id="hero-text">Eine offene Ganztagesschule mit Naturprofil auf dem Gm&uuml;nder Sonnenh&uuml;gel.</p>
+    <p class="hero-label" id="school-motto">Leben, Lachen, Lernen</p>
+    <h2 id="hero-headline">Herzlich Willkommen</h2>
+    <h3 id="hero-subheadline">auf den Seiten der Grundschule Hardt in Schw&auml;bisch Gm&uuml;nd</h3>
+    <p class="subtitle" id="hero-text">in starker Gemeinschaft f&uuml;r die Zukunft</p>
     <div class="hero-cta">
       <a href="#schule" class="btn-primary">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z"/></svg>
-        Schule entdecken
+        Einladung zur Schulbesichtigung
       </a>
-      <a href="#kontakt" class="btn-secondary">Termin vereinbaren</a>
+      <a href="https://moodle.schulen.gd/moodle" class="btn-secondary" target="_blank">Moodle-Plattform</a>
     </div>
   </div>
 </section>
 
-<!-- Wave: hero → white -->
-<div class="wave-divider wave-green-to-white" style="background:linear-gradient(160deg,var(--green-50),var(--purple-50))">
-  <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,60 C200,80 400,20 600,50 C800,80 1000,30 1200,55 L1200,80 L0,80Z"/></svg>
+<div class="wave-divider" style="background:linear-gradient(160deg,var(--green-50),var(--purple-50))">
+  <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,60 C200,80 400,20 600,50 C800,80 1000,30 1200,55 L1200,80 L0,80Z" fill="var(--warm-white)"/></svg>
 </div>
 
-<!-- Aktuelles -->
-<section class="section bg-white" id="aktuelles">
+<section class="section bg-white" id="schulleben">
   <div class="section-inner">
-    <p class="section-label" id="aktuelles-label">Aktuelles aus dem Schulleben</p>
+    <p class="section-label" id="schulleben-label">Schulleben</p>
     <div class="timeline" id="timeline-container"></div>
   </div>
 </section>
 
-<!-- Wave: white → purple -->
-<div class="wave-divider wave-white-to-purple" style="background:var(--warm-white)">
-  <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,40 C300,80 600,10 900,50 C1050,70 1150,30 1200,45 L1200,80 L0,80Z"/></svg>
+<div class="wave-divider" style="background:var(--warm-white)">
+  <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,40 C300,80 600,10 900,50 C1050,70 1150,30 1200,45 L1200,80 L0,80Z" fill="var(--green-50)"/></svg>
 </div>
 
-<!-- Unsere Schule -->
+<section class="section bg-green" id="termine-section">
+  <div class="section-inner">
+    <p class="section-label" style="color:var(--green-800)">Termine</p>
+    <div id="termine-container"></div>
+  </div>
+</section>
+
+<div class="wave-divider" style="background:var(--green-50)">
+  <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,50 C150,20 350,70 600,35 C850,0 1050,60 1200,40 L1200,80 L0,80Z" fill="var(--purple-50)"/></svg>
+</div>
+
 <section class="section bg-purple" id="schule">
   <div class="section-inner">
     <p class="section-label" style="color:var(--green-700)" id="schule-label">Unsere Schule</p>
@@ -207,24 +208,20 @@ nav a:hover::after{width:100%}
   </div>
 </section>
 
-<!-- Wave: purple → white -->
-<div class="wave-divider wave-purple-to-white" style="background:var(--purple-50)">
-  <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,50 C150,20 350,70 600,35 C850,0 1050,60 1200,40 L1200,80 L0,80Z"/></svg>
+<div class="wave-divider" style="background:var(--purple-50)">
+  <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,30 C200,70 500,10 700,50 C900,90 1100,25 1200,55 L1200,80 L0,80Z" fill="var(--warm-white)"/></svg>
 </div>
 
-<!-- Quote -->
 <section class="section bg-white quote-section" id="zitat">
   <span class="quote-marks">&ldquo;</span>
-  <p class="quote-text" id="quote-text">Jedes Kind bringt etwas Besonderes mit.</p>
-  <p class="quote-author" id="quote-author">Schulleiterin</p>
+  <p class="quote-text" id="quote-text">Leben, Lachen, Lernen &ndash; in starker Gemeinschaft f&uuml;r die Zukunft.</p>
+  <p class="quote-author" id="quote-author">Grundschule Hardt</p>
 </section>
 
-<!-- Wave: white → green -->
-<div class="wave-divider wave-white-to-green" style="background:var(--warm-white)">
-  <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,30 C200,70 500,10 700,50 C900,90 1100,25 1200,55 L1200,80 L0,80Z"/></svg>
+<div class="wave-divider" style="background:var(--warm-white)">
+  <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,45 C300,10 600,70 900,30 C1050,10 1150,50 1200,35 L1200,80 L0,80Z" fill="var(--green-50)"/></svg>
 </div>
 
-<!-- Zahlen -->
 <section class="section bg-green" id="zahlen">
   <div class="section-inner">
     <p class="section-label" style="color:var(--green-800)">Unsere Schule in Zahlen</p>
@@ -232,193 +229,209 @@ nav a:hover::after{width:100%}
   </div>
 </section>
 
-<!-- Wave: green → footer -->
 <div class="wave-divider" style="background:var(--green-50)">
-  <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,45 C300,10 600,70 900,30 C1050,10 1150,50 1200,35 L1200,80 L0,80Z" fill="var(--green-800)"/></svg>
+  <svg viewBox="0 0 1200 80" preserveAspectRatio="none"><path d="M0,40 C200,70 500,15 700,45 C900,75 1100,20 1200,50 L1200,80 L0,80Z" fill="var(--green-800)"/></svg>
 </div>
 
-<!-- Footer / Kontakt -->
 <footer class="footer" id="kontakt">
   <div class="footer-inner">
     <div>
       <h3>Kontakt</h3>
-      <div id="kontakt-content">
-        <p>Grundschule Hardt<br>Sz&eacute;kesf&eacute;h&eacute;rv&aacute;rer Str. 12<br>73525 Schw&auml;bisch Gm&uuml;nd</p>
-      </div>
+      <p id="kontakt-content">
+        Grundschule Hardt<br>
+        Sz&eacute;kesf&eacute;h&eacute;rv&aacute;rer Str. 12<br>
+        73525 Schw&auml;bisch Gm&uuml;nd<br><br>
+        Tel: 07171 66929<br>
+        Fax: 07171 37588<br>
+        E-Mail: <a href="mailto:poststelle@gshardt-gd.schule.bwl.de">poststelle@gshardt-gd.schule.bwl.de</a><br>
+        Schulleiterin: B&auml;rbel Schlienz
+      </p>
     </div>
     <div>
       <h3>&Ouml;ffnungszeiten</h3>
-      <div id="kontakt-hours">
-        <p>Sekretariat: Di&ndash;Fr, 09:00&ndash;11:30 Uhr<br>Betreuung: Mo&ndash;Fr, 07:00&ndash;17:00 Uhr</p>
-      </div>
+      <p id="hours-content">
+        Sekretariat: Di&ndash;Fr, 09:00&ndash;11:30 Uhr<br><br>
+        Betreuung: Mo&ndash;Fr<br>
+        07:00&ndash;08:00 Uhr<br>
+        12:30&ndash;13:45 Uhr<br>
+        15:15&ndash;17:00 Uhr
+      </p>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>&copy; 2026 Grundschule Hardt &middot; Alle Inhalte werden aus dem Dokument <em>inhalte.docx</em> geladen</p>
+    <span>Grundschule Hardt &copy; 2026 &middot; <a href="mailto:info@gshardt.de">info@gshardt.de</a></span>
+    <span><a href="#">Datenschutz</a><a href="#">Impressum</a></span>
   </div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
 <script>
 (function() {
-  // ─── Scroll animations ───
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.15 });
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
 
-  // ─── Header shadow ───
-  window.addEventListener('scroll', () => {
+  window.addEventListener('scroll', function() {
     document.getElementById('header').classList.toggle('scrolled', window.scrollY > 40);
   });
 
-  // ─── Load and parse docx ───
   fetch('inhalte.docx')
-    .then(r => r.arrayBuffer())
-    .then(buf => mammoth.convertToHtml({ arrayBuffer: buf }))
-    .then(result => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(result.value, 'text/html');
-      const elements = Array.from(doc.body.children);
+    .then(function(r) { return r.arrayBuffer(); })
+    .then(function(buf) { return mammoth.convertToHtml({ arrayBuffer: buf }); })
+    .then(function(result) {
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(result.value, 'text/html');
+      var elements = Array.from(doc.body.children);
 
-      // Build a structure: group by H2 sections
-      const sections = {};
-      let currentSection = null;
-      let currentItems = [];
+      var sections = {};
+      var currentSection = null;
+      var currentItems = [];
 
-      elements.forEach(el => {
-        const tag = el.tagName;
-        const text = el.textContent.trim();
+      elements.forEach(function(el) {
+        var tag = el.tagName;
+        var text = el.textContent.trim();
 
         if (tag === 'H1') {
-          // School name
           document.getElementById('school-name').textContent = text;
         } else if (tag === 'P' && !currentSection && el.querySelector('em')) {
-          // Motto (italic text right after H1)
-          document.getElementById('school-motto').textContent = text;
+          document.getElementById('school-motto').textContent = text.split('\u2013')[0].trim();
         } else if (tag === 'H2') {
           if (currentSection) sections[currentSection] = currentItems;
           currentSection = text;
           currentItems = [];
         } else if (tag === 'H3') {
-          currentItems.push({ title: text, body: '' });
+          currentItems.push({ title: text, body: '', date: '' });
         } else if (tag === 'P' && currentSection) {
           if (currentSection === 'Willkommen') {
-            // Hero content
-            if (el.querySelector('strong') || text.length < 80) {
-              document.getElementById('hero-headline').textContent = text;
+            if (el.querySelector('strong') || text.length < 100) {
+              document.getElementById('hero-subheadline').textContent = text;
             } else {
               document.getElementById('hero-text').textContent = text;
             }
           } else if (currentItems.length > 0) {
-            currentItems[currentItems.length - 1].body += (currentItems[currentItems.length - 1].body ? ' ' : '') + text;
+            var last = currentItems[currentItems.length - 1];
+            var isGray = el.innerHTML && el.innerHTML.indexOf('888888') > -1;
+            if (isGray || (!last.date && /^\d{1,2}\.\s/.test(text) && text.length < 30)) {
+              last.date = text;
+            } else {
+              last.body += (last.body ? ' ' : '') + text;
+            }
           } else {
-            currentItems.push({ title: '', body: text });
+            currentItems.push({ title: '', body: text, date: '' });
           }
         }
       });
       if (currentSection) sections[currentSection] = currentItems;
 
-      // ─── Render Aktuelles ───
-      const aktuellesKey = Object.keys(sections).find(k => k.includes('Aktuelles'));
-      if (aktuellesKey) {
-        const label = document.getElementById('aktuelles-label');
-        label.textContent = aktuellesKey;
-        const container = document.getElementById('timeline-container');
+      // Schulleben
+      var schlKey = Object.keys(sections).find(function(k) { return k.includes('Schulleben'); });
+      if (schlKey) {
+        document.getElementById('schulleben-label').textContent = schlKey;
+        var container = document.getElementById('timeline-container');
         container.innerHTML = '';
-        sections[aktuellesKey].forEach(item => {
-          const div = document.createElement('div');
+        sections[schlKey].forEach(function(item) {
+          var div = document.createElement('div');
           div.className = 'timeline-item';
-          div.innerHTML = '<h4>' + item.title + '</h4><p>' + item.body + '</p>';
+          var html = '<h4>' + item.title + '</h4>';
+          if (item.date) html += '<div class="date">' + item.date + '</div>';
+          html += '<p>' + item.body + '</p>';
+          div.innerHTML = html;
           container.appendChild(div);
           observer.observe(div);
         });
       }
 
-      // ─── Render Unsere Schule ───
-      const schuleKey = Object.keys(sections).find(k => k.includes('Unsere Schule'));
+      // Termine
+      var termKey = Object.keys(sections).find(function(k) { return k.includes('Termine'); });
+      if (termKey) {
+        var tc = document.getElementById('termine-container');
+        tc.innerHTML = '';
+        sections[termKey].forEach(function(item, i) {
+          var text = item.body || item.title;
+          var colonIdx = text.indexOf(': ');
+          var div = document.createElement('div');
+          div.className = 'termin-item';
+          div.style.transitionDelay = (i * 0.08) + 's';
+          if (colonIdx > 5) {
+            div.innerHTML = '<span class="termin-date">' + text.substring(0, colonIdx) + '</span><span class="termin-title">' + text.substring(colonIdx + 2) + '</span>';
+          } else {
+            div.innerHTML = '<span class="termin-title">' + text + '</span>';
+          }
+          tc.appendChild(div);
+          observer.observe(div);
+        });
+      }
+
+      // Unsere Schule
+      var schuleKey = Object.keys(sections).find(function(k) { return k === 'Unsere Schule'; });
       if (schuleKey) {
-        document.getElementById('schule-label').textContent = schuleKey;
-        const container = document.getElementById('schule-container');
-        container.innerHTML = '';
-        sections[schuleKey].forEach(item => {
-          const div = document.createElement('div');
+        var sc = document.getElementById('schule-container');
+        sc.innerHTML = '';
+        sections[schuleKey].forEach(function(item) {
+          var div = document.createElement('div');
           div.className = 'school-section';
           div.innerHTML = '<h4>' + item.title + '</h4><p>' + item.body + '</p>';
-          container.appendChild(div);
+          sc.appendChild(div);
           observer.observe(div);
         });
       }
 
-      // ─── Render Zitat ───
-      const zitatKey = Object.keys(sections).find(k => k.includes('Zitat'));
+      // Zitat
+      var zitatKey = Object.keys(sections).find(function(k) { return k.includes('Zitat'); });
       if (zitatKey && sections[zitatKey].length > 0) {
-        const items = sections[zitatKey];
-        // First item body is the quote
-        const quoteItem = items[0];
-        document.getElementById('quote-text').textContent = quoteItem.body || quoteItem.title;
-        // Check for author in second item or in body
-        if (items.length > 1) {
-          document.getElementById('quote-author').textContent = items[1].body || items[1].title;
+        document.getElementById('quote-text').textContent = sections[zitatKey][0].body || sections[zitatKey][0].title;
+        if (sections[zitatKey].length > 1) {
+          document.getElementById('quote-author').textContent = sections[zitatKey][1].body || sections[zitatKey][1].title;
         }
       }
 
-      // ─── Render Zahlen ───
-      const zahlenKey = Object.keys(sections).find(k => k.includes('Zahlen'));
+      // Zahlen
+      var zahlenKey = Object.keys(sections).find(function(k) { return k.includes('Zahlen'); });
       if (zahlenKey) {
-        const container = document.getElementById('stats-container');
-        container.innerHTML = '';
-        sections[zahlenKey].forEach((item, i) => {
-          const text = item.body || item.title;
-          const match = text.match(/^(\d+)\s+(.+)$/);
+        var zc = document.getElementById('stats-container');
+        zc.innerHTML = '';
+        sections[zahlenKey].forEach(function(item, i) {
+          var text = item.body || item.title;
+          var match = text.match(/^(\d+)\s+(.+)$/);
           if (match) {
-            const div = document.createElement('div');
+            var div = document.createElement('div');
             div.className = 'stat-item';
             div.style.transitionDelay = (i * 0.1) + 's';
             div.innerHTML = '<div class="stat-number">' + match[1] + '</div><div class="stat-label">' + match[2] + '</div>';
-            container.appendChild(div);
+            zc.appendChild(div);
             observer.observe(div);
           }
         });
       }
 
-      // ─── Render Kontakt ───
-      const kontaktKey = Object.keys(sections).find(k => k.includes('Kontakt'));
+      // Kontakt
+      var kontaktKey = Object.keys(sections).find(function(k) { return k === 'Kontakt'; });
       if (kontaktKey) {
-        const items = sections[kontaktKey];
-        const kontaktDiv = document.getElementById('kontakt-content');
-        const hoursDiv = document.getElementById('kontakt-hours');
-        let addressLines = [];
-        let contactLines = [];
-        let hoursLines = [];
-
-        items.forEach(item => {
-          const t = item.body || item.title;
-          if (t.includes('ffnungszeiten') || t.includes('Mo') || t.includes('Di')) {
-            hoursLines.push(t);
-          } else if (t.includes('Tel') || t.includes('Mail') || t.includes('@')) {
-            contactLines.push(t);
+        var lines = sections[kontaktKey].map(function(i) { return i.body || i.title; });
+        var addr = [], contact = [];
+        lines.forEach(function(l) {
+          if (l.includes('Tel') || l.includes('Fax') || l.includes('Mail') || l.includes('@') || l.includes('Schulleiter')) {
+            contact.push(l.includes('@') && !l.includes('Mail') ? '<a href="mailto:' + l + '">' + l + '</a>' : l);
           } else {
-            addressLines.push(t);
+            addr.push(l);
           }
         });
-
-        kontaktDiv.innerHTML = '<p>' + addressLines.join('<br>') +
-          (contactLines.length ? '<br><br>' + contactLines.join('<br>') : '') + '</p>';
-        if (hoursLines.length) {
-          hoursDiv.innerHTML = '<p>' + hoursLines.join('<br>') + '</p>';
-        }
+        document.getElementById('kontakt-content').innerHTML = addr.join('<br>') + (contact.length ? '<br><br>' + contact.join('<br>') : '');
       }
 
-      // ─── Hide loading ───
-      setTimeout(() => {
-        document.getElementById('loading').classList.add('hidden');
-      }, 400);
+      // Öffnungszeiten
+      var hoursKey = Object.keys(sections).find(function(k) { return k.includes('ffnungszeiten'); });
+      if (hoursKey) {
+        var hl = sections[hoursKey].map(function(i) { return i.body || i.title; });
+        document.getElementById('hours-content').innerHTML = hl.join('<br>');
+      }
+
+      setTimeout(function() { document.getElementById('loading').classList.add('hidden'); }, 400);
     })
-    .catch(err => {
-      console.error('Fehler beim Laden der Inhalte:', err);
+    .catch(function(err) {
+      console.error('Fehler:', err);
       document.getElementById('loading').innerHTML =
-        '<p style="color:#c62828;font-size:1rem">Die Datei <strong>inhalte.docx</strong> konnte nicht geladen werden.<br><br>' +
-        '<span style="color:var(--text-light);font-size:.85rem">Bitte stelle sicher, dass die Datei im selben Ordner wie index.html liegt.</span></p>';
+        '<p style="color:#c62828;font-size:1rem">Die Datei <strong>inhalte.docx</strong> konnte nicht geladen werden.<br><br><span style="color:var(--text-light);font-size:.85rem">Bitte stelle sicher, dass die Datei im selben Ordner wie index.html liegt.</span></p>';
     });
 })();
 </script>
