@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grundschule Hardt – Schwäbisch Gmünd</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:    #111108;
+  --ink-2:  #3a3a32;
+  --ink-3:  #7a7a6e;
+  --cream:  #faf6ee;
+  --paper:  #f3ede0;
+  --red:    #c8291a;
+  --red-d:  #9e1f12;
+  --gold:   #b8860b;
+  --rule:   #c8c0a8;
+  --rule-d: #8a8070;
+  --font-h: 'Playfair Display', Georgia, serif;
+  --font-b: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-s: 'IBM Plex Serif', Georgia, serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--cream);color:var(--ink);line-height:1.65;font-size:16px;overflow-x:hidden}
+
+/* Loading */
+#loading{position:fixed;inset:0;background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s}
+#loading.hidden{opacity:0;pointer-events:none}
+.loader-press{font-family:var(--font-h);font-size:1.4rem;color:var(--ink-3);letter-spacing:.06em;animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ── Masthead ── */
+.masthead{background:var(--cream);border-bottom:3px solid var(--ink);position:fixed;top:0;left:0;right:0;z-index:100;transition:box-shadow .3s}
+.masthead.scrolled{box-shadow:0 2px 12px rgba(0,0,0,.1)}
+.masthead-top{max-width:1200px;margin:0 auto;padding:.55rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--rule)}
+.masthead-date{font-family:var(--font-b);font-size:.68rem;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+.masthead-motto{font-family:var(--font-s);font-size:.78rem;font-style:italic;color:var(--ink-3)}
+.masthead-main{max-width:1200px;margin:0 auto;padding:.5rem 2rem .6rem;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2rem}
+.masthead-nav-left,.masthead-nav-right{display:flex;gap:1.6rem;align-items:center}
+.masthead-nav-left{justify-content:flex-start}
+.masthead-nav-right{justify-content:flex-end}
+.masthead-nav-left a,.masthead-nav-right a{text-decoration:none;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);transition:color .2s;white-space:nowrap}
+.masthead-nav-left a:hover,.masthead-nav-right a:hover,.masthead-nav-left a.active,.masthead-nav-right a.active{color:var(--red)}
+.masthead-logo{text-align:center}
+.masthead-logo-name{font-family:var(--font-h);font-size:clamp(1.4rem,3vw,2.2rem);font-weight:900;letter-spacing:-.02em;color:var(--ink);line-height:1;display:block}
+.masthead-logo-sub{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-3);display:block;margin-top:.15rem}
+.masthead-logo{text-decoration:none}
+
+.burger{display:none;background:none;border:none;cursor:pointer;padding:4px;flex-direction:column;gap:5px;z-index:201}
+.burger span{display:block;width:22px;height:1.5px;background:var(--ink);transition:all .3s}
+.burger.open span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
+.mobile-nav-overlay{position:fixed;inset:0;background:rgba(250,246,238,.97);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;opacity:0;pointer-events:none;transition:opacity .3s}
+.mobile-nav-overlay.open{opacity:1;pointer-events:auto}
+.mobile-nav-overlay a{font-family:var(--font-h);font-size:2.4rem;font-weight:700;color:var(--ink);text-decoration:none;transform:translateY(12px);opacity:0;transition:all .4s;border-bottom:2px solid transparent}
+.mobile-nav-overlay.open a{transform:translateY(0);opacity:1}
+.mobile-nav-overlay.open a:nth-child(1){transition-delay:.05s}
+.mobile-nav-overlay.open a:nth-child(2){transition-delay:.1s}
+.mobile-nav-overlay.open a:nth-child(3){transition-delay:.15s}
+.mobile-nav-overlay.open a:nth-child(4){transition-delay:.2s}
+.mobile-nav-overlay.open a:nth-child(5){transition-delay:.25s}
+.mobile-nav-overlay a:hover{color:var(--red)}
+
+/* ── Hero – Titelseite ── */
+.hero{padding:9rem 2rem 0;background:var(--cream);position:relative;overflow:hidden}
+.hero-inner{max-width:1200px;margin:0 auto}
+.hero-kicker{display:flex;align-items:center;gap:12px;margin-bottom:1.2rem;opacity:0;animation:fadeIn .6s .2s forwards}
+.kicker-rule{flex:1;height:2px;background:var(--red)}
+.kicker-text{font-size:.68rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--red);white-space:nowrap}
+.hero-grid{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;align-items:start;margin-bottom:0}
+.hero-col-divider{background:var(--rule-d);height:100%;min-height:200px}
+.hero-left{padding-right:2.5rem;opacity:0;animation:fadeIn .7s .3s forwards}
+.hero-right{padding-left:2.5rem;opacity:0;animation:fadeIn .7s .5s forwards}
+.hero-h1{font-family:var(--font-h);font-size:clamp(3.2rem,6vw,5.8rem);font-weight:900;line-height:.95;letter-spacing:-.03em;color:var(--ink);margin-bottom:.8rem}
+.hero-h1 em{font-style:italic;color:var(--red)}
+.hero-deck{font-family:var(--font-s);font-size:1.1rem;font-style:italic;color:var(--ink-2);line-height:1.6;margin-bottom:1.5rem}
+.hero-byline{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);border-top:1px solid var(--rule);padding-top:.6rem;margin-bottom:1.5rem}
+.hero-body{font-size:.95rem;color:var(--ink-2);line-height:1.75;columns:1}
+.hero-right-label{font-size:.65rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+.hero-cta-stack{display:flex;flex-direction:column;gap:.7rem;margin-top:1.5rem}
+.btn-editorial{display:block;text-align:center;text-decoration:none;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.75rem 1.5rem;transition:all .2s}
+.btn-editorial-fill{background:var(--ink);color:var(--cream)}
+.btn-editorial-fill:hover{background:var(--red)}
+.btn-editorial-outline{border:1.5px solid var(--ink);color:var(--ink)}
+.btn-editorial-outline:hover{border-color:var(--red);color:var(--red)}
+.hero-number-feature{margin-top:1.5rem;border-top:1px solid var(--rule);padding-top:1.2rem}
+.hero-number-row{display:flex;gap:2rem}
+.hero-stat{text-align:center;flex:1}
+.hero-stat-n{font-family:var(--font-h);font-size:2.2rem;font-weight:900;color:var(--ink);display:block;line-height:1}
+.hero-stat-l{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);display:block;margin-top:.2rem}
+.hero-bottom{border-top:3px double var(--rule-d);margin-top:2rem;padding:.6rem 0;display:flex;gap:2rem;overflow:hidden}
+.hero-ticker-item{font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap;padding-right:3rem;position:relative}
+.hero-ticker-item::after{content:'✦';position:absolute;right:1rem;color:var(--red)}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* Column rule helper */
+.col-rule{width:100%;height:1px;background:var(--rule);margin:2.5rem 0}
+.col-rule-heavy{width:100%;height:3px;background:var(--ink);margin:0}
+.col-rule-double{width:100%;height:4px;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);margin:0;padding-top:2px}
+
+/* ── Sections ── */
+.section{padding:3.5rem 2rem;position:relative}
+.section-inner{max-width:1200px;margin:0 auto}
+
+/* Section header */
+.ed-section-head{display:flex;align-items:center;gap:0;margin-bottom:2.5rem;border-top:3px solid var(--ink);border-bottom:1px solid var(--rule);padding:.5rem 0}
+.ed-section-label{font-family:var(--font-h);font-size:1.5rem;font-weight:900;letter-spacing:-.01em;color:var(--ink);padding-right:1.2rem;border-right:2px solid var(--rule-d);margin-right:1.2rem;line-height:1}
+.ed-section-sub{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.ed-section-head.red .ed-section-label{color:var(--red)}
+
+/* Schulleben – Zeitungspalten */
+.news-grid{display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0;align-items:start}
+.news-divider{background:var(--rule);width:1px}
+.news-item{padding:0 1.8rem;opacity:0;transform:translateY(16px);transition:all .55s}
+.news-item:first-child{padding-left:0}
+.news-item:last-child{padding-right:0}
+.news-item.visible{opacity:1;transform:translateY(0)}
+.news-item-number{font-family:var(--font-h);font-size:4rem;font-weight:900;color:var(--rule);line-height:1;display:block;margin-bottom:-.5rem}
+.news-item h4{font-family:var(--font-h);font-size:1.3rem;font-weight:700;line-height:1.2;margin-bottom:.4rem;color:var(--ink)}
+.news-date{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:.6rem;display:block}
+.news-item p{font-family:var(--font-s);font-size:.88rem;color:var(--ink-2);line-height:1.8}
+
+/* Bilder */
+.item-images{margin-top:.8rem;display:flex;flex-wrap:wrap;gap:.4rem}
+.item-images img{width:100%;height:140px;object-fit:cover;display:block;cursor:zoom-in;filter:grayscale(20%);transition:filter .2s}
+.item-images img:hover{filter:grayscale(0%)}
+.item-images img:only-child{height:180px}
+
+/* Lightbox */
+#lightbox{position:fixed;inset:0;background:rgba(17,17,8,.95);z-index:9998;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:1.5rem}
+#lightbox.open{opacity:1;pointer-events:auto}
+#lightbox img{max-width:92vw;max-height:88vh;object-fit:contain;transform:scale(.92);transition:transform .3s}
+#lightbox.open img{transform:scale(1)}
+#lightbox-close{position:absolute;top:1.2rem;right:1.4rem;background:none;border:1px solid rgba(255,255,255,.2);color:#fff;font-size:1.2rem;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+#lightbox-close:hover{border-color:#fff}
+#lightbox-prev,#lightbox-next{position:absolute;top:50%;transform:translateY(-50%);background:none;border:1px solid rgba(255,255,255,.2);color:#fff;font-size:1.3rem;width:42px;height:42px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+#lightbox-prev{left:1rem}#lightbox-next{right:1rem}
+#lightbox-prev:hover,#lightbox-next:hover{border-color:#fff}
+#lightbox-prev.hidden,#lightbox-next.hidden{opacity:0;pointer-events:none}
+#lightbox-counter{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.4);font-size:.72rem;letter-spacing:.1em}
+
+/* Termine */
+.bg-paper{background:var(--paper)}
+.termine-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 4rem}
+.termin-item{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:.5rem 1rem;padding:.7rem 0;border-bottom:1px solid var(--rule);opacity:0;transform:translateX(-12px);transition:all .45s}
+.termin-item.visible{opacity:1;transform:translateX(0)}
+.termin-item:last-child{border-bottom:none}
+.termin-title{font-family:var(--font-b);font-size:.9rem;color:var(--ink);font-weight:500;line-height:1.4}
+.termin-date{font-family:var(--font-h);font-size:.78rem;font-weight:700;color:var(--red);letter-spacing:.04em;white-space:nowrap;text-align:right}
+
+/* Unsere Schule */
+.schule-cols{columns:2;column-gap:3rem;column-rule:1px solid var(--rule)}
+.schule-item{break-inside:avoid;margin-bottom:2rem;opacity:0;transform:translateY(12px);transition:all .5s}
+.schule-item.visible{opacity:1;transform:translateY(0)}
+.schule-item h4{font-family:var(--font-h);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;line-height:1.2}
+.schule-item p{font-family:var(--font-s);font-size:.88rem;color:var(--ink-2);line-height:1.8}
+.schule-item .item-images img{height:120px;filter:grayscale(30%)}
+
+/* Pull quote */
+.pull-quote{background:var(--ink);color:var(--cream);padding:4.5rem 2rem;text-align:center;position:relative;overflow:hidden}
+.pull-quote::before{content:'\201C';font-family:var(--font-h);font-size:16rem;font-weight:900;color:var(--red);position:absolute;top:-2rem;left:50%;transform:translateX(-50%);line-height:1;opacity:.12;pointer-events:none}
+.pull-quote-text{font-family:var(--font-h);font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;font-style:italic;max-width:700px;margin:0 auto .8rem;line-height:1.25;position:relative;z-index:1}
+.pull-quote-by{font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--rule)}
+
+/* Zahlen */
+.zahlen-strip{display:grid;grid-template-columns:repeat(4,1fr);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+.stat-item{text-align:center;padding:2.5rem 1rem;border-right:1px solid var(--rule);opacity:0;transform:scale(.9);transition:all .5s}
+.stat-item:last-child{border-right:none}
+.stat-item.visible{opacity:1;transform:scale(1)}
+.stat-number{font-family:var(--font-h);font-size:4rem;font-weight:900;letter-spacing:-.04em;line-height:1;display:block}
+.stat-item:nth-child(odd) .stat-number{color:var(--ink)}
+.stat-item:nth-child(even) .stat-number{color:var(--red)}
+.stat-label{font-size:.65rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);display:block;margin-top:.4rem}
+
+/* Footer */
+.footer{background:var(--ink);color:var(--cream);padding:0}
+.footer-masthead{border-bottom:1px solid rgba(255,255,255,.1);padding:2rem;text-align:center}
+.footer-masthead-name{font-family:var(--font-h);font-size:2rem;font-weight:900;letter-spacing:-.02em;display:block;color:#fff}
+.footer-masthead-sub{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);display:block;margin-top:.2rem}
+.footer-body{max-width:1200px;margin:0 auto;padding:2.5rem 2rem;display:grid;grid-template-columns:1.5fr 1px 1fr 1px 1fr;gap:0}
+.footer-rule{background:rgba(255,255,255,.1);width:1px}
+.footer-col{padding:0 2rem}
+.footer-col:first-child{padding-left:0}
+.footer-col:last-child{padding-right:0}
+.footer-col h4{font-size:.65rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.footer-col p,.footer-col a{font-size:.85rem;color:rgba(255,255,255,.6);line-height:1.9;text-decoration:none;display:block;transition:color .2s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{max-width:1200px;margin:0 auto;padding:1.2rem 2rem;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;font-size:.7rem;color:rgba(255,255,255,.25);letter-spacing:.05em}
+.footer-bottom a{color:rgba(255,255,255,.25);text-decoration:none;margin-left:1.2rem;transition:color .2s}
+.footer-bottom a:hover{color:rgba(255,255,255,.6)}
+
+/* Read more/less */
+.text-preview{display:inline}
+.text-rest{display:none}
+.text-rest.open{display:inline}
+.read-toggle{display:inline;background:none;border:none;color:var(--red);font-weight:600;font-size:.8rem;cursor:pointer;padding:0;margin-left:4px;font-family:inherit;transition:color .2s;text-decoration:underline}
+.read-toggle:hover{color:var(--red-d)}
+
+/* Responsive */
+@media(max-width:900px){
+  .news-grid{grid-template-columns:1fr;gap:2rem}
+  .news-divider{display:none}
+  .news-item{padding:0}
+  .termine-cols{grid-template-columns:1fr}
+  .schule-cols{columns:1}
+  .zahlen-strip{grid-template-columns:repeat(2,1fr)}
+  .stat-item:nth-child(2){border-right:none}
+  .stat-item:nth-child(1),.stat-item:nth-child(2){border-bottom:1px solid var(--rule)}
+  .footer-body{grid-template-columns:1fr;gap:2rem}
+  .footer-rule{display:none}
+  .footer-col{padding:0}
+}
+@media(max-width:768px){
+  .masthead-main{grid-template-columns:auto 1fr;gap:1rem}
+  .masthead-nav-left,.masthead-nav-right{display:none}
+  .burger{display:flex}
+  .hero{padding:8rem 1.5rem 0}
+  .hero-grid{grid-template-columns:1fr;gap:2rem}
+  .hero-col-divider{display:none}
+  .hero-left,.hero-right{padding:0}
+  .section{padding:2.5rem 1.5rem}
+  .footer-bottom{flex-direction:column;gap:.4rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div id="lightbox">
+  <button id="lightbox-close">&times;</button>
+  <button id="lightbox-prev">&#8249;</button>
+  <img id="lightbox-img" src="" alt="">
+  <button id="lightbox-next">&#8250;</button>
+  <span id="lightbox-counter"></span>
+</div>
+
+<div id="loading">
+  <div class="loader-press">Druckmaschine läuft&hellip;</div>
+</div>
+
+<div class="mobile-nav-overlay" id="mobileNav">
+  <a href="#hero" onclick="closeMobile()">Titelseite</a>
+  <a href="#schulleben" onclick="closeMobile()">Aktuelles</a>
+  <a href="#schule" onclick="closeMobile()">Unsere Schule</a>
+  <a href="#termine-section" onclick="closeMobile()">Termine</a>
+  <a href="#kontakt" onclick="closeMobile()">Kontakt</a>
+</div>
+
+<header class="masthead" id="header">
+  <div class="masthead-top">
+    <span class="masthead-date" id="edition-date">Ausgabe 2025/2026 &middot; Schw&auml;bisch Gm&uuml;nd</span>
+    <span class="masthead-motto" id="school-motto">Leben, Lachen, Lernen</span>
+  </div>
+  <div class="masthead-main">
+    <nav class="masthead-nav-left">
+      <a href="#hero" data-section="hero">Titelseite</a>
+      <a href="#schulleben" data-section="schulleben">Aktuelles</a>
+    </nav>
+    <a href="#hero" class="masthead-logo">
+      <span class="masthead-logo-name" id="school-name">Grundschule Hardt</span>
+      <span class="masthead-logo-sub">Schw&auml;bisch Gm&uuml;nd</span>
+    </a>
+    <nav class="masthead-nav-right">
+      <a href="#schule" data-section="schule">Unsere Schule</a>
+      <a href="#termine-section" data-section="termine-section">Termine</a>
+      <a href="#kontakt" data-section="kontakt">Kontakt</a>
+    </nav>
+    <button class="burger" id="burger" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="col-rule-heavy"></div>
+</header>
+
+<!-- Hero / Titelseite -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">
+      <div class="kicker-rule"></div>
+      <span class="kicker-text">Herzlich Willkommen</span>
+      <div class="kicker-rule"></div>
+    </div>
+    <div class="hero-grid">
+      <div class="hero-left">
+        <h1 class="hero-h1">
+          Lernen.<br>
+          Lachen.<br>
+          <em>Leben.</em>
+        </h1>
+        <p class="hero-deck" id="hero-text">In starker Gemeinschaft f&uuml;r die Zukunft &ndash; eine Schule, die Kinder begeistert.</p>
+        <div class="hero-byline">Grundschule Hardt &middot; Schw&auml;bisch Gm&uuml;nd</div>
+        <div class="hero-cta-stack">
+          <a href="#schule" class="btn-editorial btn-editorial-fill">Schulbesichtigung anfragen</a>
+          <a href="https://moodle.schulen.gd/moodle" class="btn-editorial btn-editorial-outline" target="_blank">Zur Moodle-Plattform</a>
+        </div>
+      </div>
+      <div class="hero-col-divider"></div>
+      <div class="hero-right">
+        <div class="hero-right-label">Schule auf einen Blick</div>
+        <div class="hero-number-feature">
+          <div class="hero-number-row" id="hero-stats">
+            <div class="hero-stat"><span class="hero-stat-n">—</span><span class="hero-stat-l">Sch&uuml;ler</span></div>
+            <div class="hero-stat"><span class="hero-stat-n">—</span><span class="hero-stat-l">Klassen</span></div>
+            <div class="hero-stat"><span class="hero-stat-n">—</span><span class="hero-stat-l">Lehrkr&auml;fte</span></div>
+          </div>
+        </div>
+        <div class="col-rule"></div>
+        <div class="hero-right-label">Schulleiterin</div>
+        <p style="font-family:var(--font-s);font-size:.9rem;font-style:italic;color:var(--ink-2);line-height:1.7">B&auml;rbel Schlienz</p>
+        <div class="col-rule"></div>
+        <div class="hero-right-label">Sekretariat</div>
+        <p style="font-size:.85rem;color:var(--ink-3);line-height:1.7">Dienstag &ndash; Freitag<br>09:00 &ndash; 11:30 Uhr<br>Tel: 07171 66929</p>
+      </div>
+    </div>
+    <div class="hero-bottom">
+      <span class="hero-ticker-item">Betreuung Mo&ndash;Fr 07:00&ndash;08:00 Uhr</span>
+      <span class="hero-ticker-item">Mittagsbetreuung 12:30&ndash;13:45 Uhr</span>
+      <span class="hero-ticker-item">Nachmittagsbetreuung bis 17:00 Uhr</span>
+      <span class="hero-ticker-item">Moodle-Lernplattform verf&uuml;gbar</span>
+    </div>
+  </div>
+</section>
+
+<div class="col-rule-double"></div>
+
+<!-- Schulleben -->
+<section class="section" id="schulleben" style="background:var(--cream)">
+  <div class="section-inner">
+    <div class="ed-section-head">
+      <span class="ed-section-label" id="schulleben-label">Schulleben</span>
+      <span class="ed-section-sub">Aktuelles aus Schule und Unterricht</span>
+    </div>
+    <div class="news-grid" id="timeline-container"></div>
+  </div>
+</section>
+
+<div class="col-rule-double"></div>
+
+<!-- Termine -->
+<section class="section bg-paper" id="termine-section">
+  <div class="section-inner">
+    <div class="ed-section-head red">
+      <span class="ed-section-label">Termine</span>
+      <span class="ed-section-sub">Wichtige Daten im &Uuml;berblick</span>
+    </div>
+    <div class="termine-cols" id="termine-container"></div>
+  </div>
+</section>
+
+<div class="col-rule-double"></div>
+
+<!-- Unsere Schule -->
+<section class="section" id="schule" style="background:var(--cream)">
+  <div class="section-inner">
+    <div class="ed-section-head">
+      <span class="ed-section-label" id="schule-label">Unsere Schule</span>
+      <span class="ed-section-sub">P&auml;dagogik, Angebote &amp; Profil</span>
+    </div>
+    <div class="schule-cols" id="schule-container"></div>
+  </div>
+</section>
+
+<!-- Pull Quote -->
+<div class="pull-quote" id="zitat">
+  <p class="pull-quote-text" id="quote-text">
+    &bdquo;Leben, Lachen, Lernen &ndash; in starker Gemeinschaft f&uuml;r die Zukunft.&ldquo;
+  </p>
+  <span class="pull-quote-by" id="quote-author">Grundschule Hardt</span>
+</div>
+
+<!-- Zahlen -->
+<section class="section bg-paper" id="zahlen">
+  <div class="section-inner">
+    <div class="ed-section-head">
+      <span class="ed-section-label">In Zahlen</span>
+      <span class="ed-section-sub">Unsere Schule auf einen Blick</span>
+    </div>
+    <div class="zahlen-strip" id="stats-container"></div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer" id="kontakt">
+  <div class="footer-masthead">
+    <span class="footer-masthead-name" id="footer-name">Grundschule Hardt</span>
+    <span class="footer-masthead-sub">Schw&auml;bisch Gm&uuml;nd &middot; gegr&uuml;ndet f&uuml;r die Zukunft</span>
+  </div>
+  <div class="footer-body">
+    <div class="footer-col">
+      <h4>Adresse &amp; Kontakt</h4>
+      <p id="kontakt-content">
+        Sz&eacute;kesf&eacute;h&eacute;rv&aacute;rer Str. 12<br>
+        73525 Schw&auml;bisch Gm&uuml;nd<br>
+        Tel: 07171 66929 &middot; Fax: 07171 37588<br>
+        <a href="mailto:poststelle@gshardt-gd.schule.bwl.de">poststelle@gshardt-gd.schule.bwl.de</a><br>
+        Schulleiterin: B&auml;rbel Schlienz
+      </p>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-col">
+      <h4>Sekretariat</h4>
+      <p>Dienstag bis Freitag<br>09:00 &ndash; 11:30 Uhr</p>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-col">
+      <h4>Betreuung</h4>
+      <p id="hours-content">Mo&ndash;Fr 07:00&ndash;08:00 Uhr<br>12:30&ndash;13:45 Uhr<br>15:15&ndash;17:00 Uhr</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>Grundschule Hardt &copy; 2026 &middot; Schw&auml;bisch Gm&uuml;nd</span>
+    <span><a href="#">Datenschutz</a><a href="#">Impressum</a></span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+<script>
+// Lightbox
+(function(){
+  var lb=document.getElementById('lightbox'),lbImg=document.getElementById('lightbox-img'),
+      lbCounter=document.getElementById('lightbox-counter'),
+      lbPrev=document.getElementById('lightbox-prev'),lbNext=document.getElementById('lightbox-next'),
+      allImgs=[],current=0;
+  function open(imgs,idx){allImgs=imgs;current=idx;show();lb.classList.add('open');document.body.style.overflow='hidden'}
+  function close(){lb.classList.remove('open');document.body.style.overflow=''}
+  function show(){lbImg.src=allImgs[current];lbCounter.textContent=allImgs.length>1?(current+1)+' / '+allImgs.length:'';lbPrev.classList.toggle('hidden',current===0);lbNext.classList.toggle('hidden',current===allImgs.length-1)}
+  document.getElementById('lightbox-close').onclick=close;
+  lb.addEventListener('click',function(e){if(e.target===lb)close()});
+  lbPrev.onclick=function(){if(current>0){current--;show()}};
+  lbNext.onclick=function(){if(current<allImgs.length-1){current++;show()}};
+  document.addEventListener('keydown',function(e){if(!lb.classList.contains('open'))return;if(e.key==='Escape')close();if(e.key==='ArrowLeft'&&current>0){current--;show()}if(e.key==='ArrowRight'&&current<allImgs.length-1){current++;show()}});
+  document.addEventListener('click',function(e){var img=e.target.closest('.item-images img');if(!img)return;var g=img.closest('.item-images');var imgs=Array.from(g.querySelectorAll('img')).map(function(i){return i.src});var idx=Array.from(g.querySelectorAll('img')).indexOf(img);open(imgs,idx)});
+})();
+
+function toggleMobile(){
+  document.getElementById('burger').classList.toggle('open');
+  document.getElementById('mobileNav').classList.toggle('open');
+  document.body.style.overflow=document.getElementById('mobileNav').classList.contains('open')?'hidden':'';
+}
+function closeMobile(){
+  document.getElementById('burger').classList.remove('open');
+  document.getElementById('mobileNav').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+(function(){
+  var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});
+  window.addEventListener('scroll',function(){document.getElementById('header').classList.toggle('scrolled',window.scrollY>60)});
+  var navLinks=document.querySelectorAll('[data-section]');
+  var sectionObserver=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){navLinks.forEach(function(l){l.classList.remove('active')});document.querySelectorAll('[data-section="'+e.target.id+'"]').forEach(function(l){l.classList.add('active')})}});
+  },{threshold:0.3,rootMargin:'-80px 0px -40% 0px'});
+  ['hero','schulleben','termine-section','schule','kontakt'].forEach(function(id){var el=document.getElementById(id);if(el)sectionObserver.observe(el)});
+
+  function animateCounter(el,target){var startTime=null;function step(ts){if(!startTime)startTime=ts;var p=Math.min((ts-startTime)/1400,1);el.textContent=Math.round((1-Math.pow(1-p,3))*target);if(p<1)requestAnimationFrame(step)}requestAnimationFrame(step)}
+  var counterObserver=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting&&!e.target.dataset.counted){e.target.dataset.counted='1';var n=parseInt(e.target.textContent);if(!isNaN(n))animateCounter(e.target,n)}})},{threshold:0.5});
+
+  // Datum
+  var d=new Date();
+  document.getElementById('edition-date').textContent='Ausgabe 2025/2026 · Schwäbisch Gmünd';
+
+  fetch('inhalte.docx')
+    .then(function(r){return r.arrayBuffer()})
+    .then(function(buf){
+      return mammoth.convertToHtml({arrayBuffer:buf},{
+        convertImage:mammoth.images.imgElement(function(image){
+          return image.read('base64').then(function(data){return{src:'data:'+image.contentType+';base64,'+data}})
+        })
+      })
+    })
+    .then(function(result){
+      var parser=new DOMParser();
+      var doc=parser.parseFromString(result.value,'text/html');
+      var elements=Array.from(doc.body.children);
+      var sections={},currentSection=null,currentItems=[];
+
+      elements.forEach(function(el){
+        var tag=el.tagName,text=el.textContent.trim();
+        if(tag==='H1'){
+          document.getElementById('school-name').textContent=text;
+          document.getElementById('footer-name').textContent=text;
+        } else if(tag==='P'&&!currentSection&&el.querySelector('em')){
+          document.getElementById('school-motto').textContent=text.split('\u2013')[0].trim();
+        } else if(tag==='H2'){
+          if(currentSection)sections[currentSection]=currentItems;
+          currentSection=text;currentItems=[];
+        } else if(tag==='H3'){
+          currentItems.push({title:text,body:'',date:'',images:[]});
+        } else if((tag==='IMG'||tag==='P')&&currentSection){
+          var imgs=(tag==='IMG')?[el]:Array.from(el.querySelectorAll('img'));
+          if(imgs.length>0){
+            if(currentItems.length===0)currentItems.push({title:'',body:'',date:'',images:[]});
+            var last=currentItems[currentItems.length-1];
+            if(!last.images)last.images=[];
+            imgs.forEach(function(img){last.images.push(img.outerHTML)});
+            if(tag==='P'&&text)last.body+=(last.body?' ':'')+text;
+          } else if(tag==='P'){
+            if(currentSection==='Willkommen'){
+              if(el.querySelector('strong')||text.length<100)document.getElementById('hero-text').textContent=text;
+              else document.getElementById('hero-text').textContent=text;
+            } else if(currentItems.length>0){
+              var last=currentItems[currentItems.length-1];
+              var isGray=el.innerHTML&&el.innerHTML.indexOf('888888')>-1;
+              if(isGray||(!last.date&&/^\d{1,2}\.\s/.test(text)&&text.length<30)){last.date=text}
+              else{
+                var isList=/Termine|Zahlen|Kontakt|ffnungszeiten/.test(currentSection);
+                if(isList&&last.title===''&&last.body!=='')currentItems.push({title:'',body:text,date:'',images:[]});
+                else last.body+=(last.body?' ':'')+text;
+              }
+            } else{currentItems.push({title:'',body:text,date:'',images:[]})}
+          }
+        }
+      });
+      if(currentSection)sections[currentSection]=currentItems;
+
+      var toggleId=0;
+      function truncatedHtml(text){
+        if(!text)return'';
+        var s=text.match(/[^.!?]*[.!?]+(\s|$)/g);
+        if(!s||s.length<=2)return'<p>'+text+'</p>';
+        var preview=s.slice(0,2).join('').trim(),rest=s.slice(2).join('').trim();
+        var id='t'+(toggleId++);
+        return'<p><span class="text-preview">'+preview+'</span><span class="text-rest" id="'+id+'"> '+rest+'</span><button class="read-toggle" onclick="var r=document.getElementById(\''+id+'\');var o=r.classList.toggle(\'open\');this.textContent=o?\' weniger\':\' mehr lesen\';"> mehr lesen</button></p>';
+      }
+
+      // Schulleben → 3-spaltiges Zeitungsraster
+      var schlKey=Object.keys(sections).find(function(k){return k.includes('Schulleben')});
+      if(schlKey){
+        document.getElementById('schulleben-label').textContent=schlKey;
+        var c=document.getElementById('timeline-container');c.innerHTML='';
+        var items=sections[schlKey];
+        // Immer in 3er-Blöcken mit Trennlinien
+        items.forEach(function(item,i){
+          if(i>0&&i%3===0){
+            // Neues Grid anfangen: Trennlinie + neues grid-div
+            var rule=document.createElement('div');
+            rule.style.cssText='grid-column:1/-1;height:1px;background:var(--rule);margin:1.5rem 0';
+            c.appendChild(rule);
+          }
+          if(i%3!==0&&i>0){
+            var div2=document.createElement('div');div2.className='news-divider';c.appendChild(div2);
+          }
+          var div=document.createElement('div');div.className='news-item';
+          div.style.transitionDelay=(i%3*0.1)+'s';
+          var imgHtml=(item.images&&item.images.length)?'<div class="item-images">'+item.images.join('')+'</div>':'';
+          div.innerHTML='<span class="news-item-number">0'+(i+1)+'</span>'
+            +'<h4>'+item.title+'</h4>'
+            +(item.date?'<span class="news-date">'+item.date+'</span>':'')
+            +truncatedHtml(item.body)+imgHtml;
+          c.appendChild(div);observer.observe(div);
+        });
+      }
+
+      // Termine
+      var termKey=Object.keys(sections).find(function(k){return k.includes('Termine')});
+      if(termKey){
+        var tc=document.getElementById('termine-container');tc.innerHTML='';
+        sections[termKey].forEach(function(item,i){
+          var text=item.body||item.title,colonIdx=text.indexOf(': ');
+          var div=document.createElement('div');div.className='termin-item';
+          div.style.transitionDelay=(i*0.06)+'s';
+          if(colonIdx>5)div.innerHTML='<span class="termin-title">'+text.substring(colonIdx+2)+'</span><span class="termin-date">'+text.substring(0,colonIdx)+'</span>';
+          else div.innerHTML='<span class="termin-title">'+text+'</span>';
+          tc.appendChild(div);observer.observe(div);
+        });
+      }
+
+      // Unsere Schule
+      var schuleKey=Object.keys(sections).find(function(k){return k==='Unsere Schule'});
+      if(schuleKey){
+        var sc=document.getElementById('schule-container');sc.innerHTML='';
+        sections[schuleKey].forEach(function(item){
+          var div=document.createElement('div');div.className='schule-item';
+          var imgHtml=(item.images&&item.images.length)?'<div class="item-images">'+item.images.join('')+'</div>':'';
+          div.innerHTML='<h4>'+item.title+'</h4>'+truncatedHtml(item.body)+imgHtml;
+          sc.appendChild(div);observer.observe(div);
+        });
+      }
+
+      // Zitat
+      var zitatKey=Object.keys(sections).find(function(k){return k.includes('Zitat')});
+      if(zitatKey&&sections[zitatKey].length>0){
+        var qt=sections[zitatKey][0].body||sections[zitatKey][0].title;
+        document.getElementById('quote-text').innerHTML='&bdquo;'+qt+'&ldquo;';
+        if(sections[zitatKey].length>1)document.getElementById('quote-author').textContent=sections[zitatKey][1].body||sections[zitatKey][1].title;
+      }
+
+      // Zahlen
+      var zahlenKey=Object.keys(sections).find(function(k){return k.includes('Zahlen')});
+      if(zahlenKey){
+        var zc=document.getElementById('stats-container');zc.innerHTML='';
+        var heroStats=[];
+        sections[zahlenKey].forEach(function(item,i){
+          var text=item.body||item.title,match=text.match(/^(\d+)\s+(.+)$/);
+          if(match){
+            var div=document.createElement('div');div.className='stat-item';div.style.transitionDelay=(i*0.1)+'s';
+            div.innerHTML='<span class="stat-number" data-target="'+match[1]+'">'+match[1]+'</span><span class="stat-label">'+match[2]+'</span>';
+            zc.appendChild(div);observer.observe(div);counterObserver.observe(div.querySelector('.stat-number'));
+            // Erste 3 auch in Hero
+            if(heroStats.length<3)heroStats.push({n:match[1],l:match[2]});
+          }
+        });
+        // Hero stats aktualisieren
+        var heroRow=document.getElementById('hero-stats');
+        if(heroRow&&heroStats.length){
+          heroRow.innerHTML=heroStats.map(function(s){
+            return'<div class="hero-stat"><span class="hero-stat-n">'+s.n+'</span><span class="hero-stat-l">'+s.l+'</span></div>';
+          }).join('');
+        }
+      }
+
+      // Kontakt
+      var kontaktKey=Object.keys(sections).find(function(k){return k==='Kontakt'});
+      if(kontaktKey){
+        var lines=sections[kontaktKey].map(function(i){return i.body||i.title});
+        var addr=[],contact=[];
+        lines.forEach(function(l){
+          if(l.includes('Tel')||l.includes('Fax')||l.includes('Mail')||l.includes('@')||l.includes('Schulleiter'))
+            contact.push(l.includes('@')&&!l.includes('Mail')?'<a href="mailto:'+l+'">'+l+'</a>':l);
+          else addr.push(l);
+        });
+        document.getElementById('kontakt-content').innerHTML=addr.join('<br>')+(contact.length?'<br>'+contact.join('<br>'):'');
+      }
+
+      // Öffnungszeiten
+      var hoursKey=Object.keys(sections).find(function(k){return k.includes('ffnungszeiten')});
+      if(hoursKey){
+        var hl=sections[hoursKey].map(function(i){return i.body||i.title});
+        document.getElementById('hours-content').innerHTML=hl.join('<br>');
+      }
+
+      setTimeout(function(){document.getElementById('loading').classList.add('hidden')},400);
+    })
+    .catch(function(err){
+      console.error(err);
+      document.getElementById('loading').innerHTML='<p style="color:var(--red);font-size:.9rem">Die Datei <strong>inhalte.docx</strong> konnte nicht geladen werden.</p>';
+    });
+})();
+</script>
+</body>
+</html>
