@@ -217,6 +217,10 @@ header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.09)}
 #lightbox-prev.hidden,#lightbox-next.hidden{opacity:0;pointer-events:none}
 #lightbox-counter{position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.6);font-size:.82rem;font-family:var(--font-body)}
 
+/* Listen in Sektionen */
+.school-section ul,.school-section ol,.timeline-item ul,.timeline-item ol{padding-left:1.4rem;margin:.5rem 0;color:var(--text-light);font-size:.95rem;line-height:1.75}
+.school-section li,.timeline-item li{margin-bottom:.25rem}
+
 /* Read more/less */
 .text-preview{display:inline}
 .text-rest{display:none}
@@ -592,13 +596,19 @@ function closeMobile() {
           currentSection = text;
           currentItems = [];
         } else if (tag === 'H3') {
-          currentItems.push({ title: text, body: '', date: '', images: [] });
+          currentItems.push({ title: text, body: '', date: '', images: [], listsHtml: '' });
+        } else if ((tag === 'UL' || tag === 'OL') && currentSection) {
+          // Aufzählungslisten erfassen
+          if (currentItems.length === 0) currentItems.push({ title: '', body: '', date: '', images: [], listsHtml: '' });
+          var last = currentItems[currentItems.length - 1];
+          if (!last.listsHtml) last.listsHtml = '';
+          last.listsHtml += el.outerHTML;
         } else if ((tag === 'IMG' || tag === 'P') && currentSection) {
           // Bilder sammeln (standalone <img> oder <img> innerhalb <p>)
           var imgs = (tag === 'IMG') ? [el] : Array.from(el.querySelectorAll('img'));
           if (imgs.length > 0) {
             // Sicherstellen dass es ein item gibt
-            if (currentItems.length === 0) currentItems.push({ title: '', body: '', date: '', images: [] });
+            if (currentItems.length === 0) currentItems.push({ title: '', body: '', date: '', images: [], listsHtml: '' });
             var last = currentItems[currentItems.length - 1];
             if (!last.images) last.images = [];
             imgs.forEach(function(img) { last.images.push(img.outerHTML); });
@@ -620,13 +630,13 @@ function closeMobile() {
               } else {
                 var isListSection = /Termine|Zahlen|Kontakt|ffnungszeiten/.test(currentSection);
                 if (isListSection && last.title === '' && last.body !== '') {
-                  currentItems.push({ title: '', body: text, date: '', images: [] });
+                  currentItems.push({ title: '', body: text, date: '', images: [], listsHtml: '' });
                 } else {
                   last.body += (last.body ? ' ' : '') + text;
                 }
               }
             } else {
-              currentItems.push({ title: '', body: text, date: '', images: [] });
+              currentItems.push({ title: '', body: text, date: '', images: [], listsHtml: '' });
             }
           }
         }
@@ -658,6 +668,7 @@ function closeMobile() {
           var html = '<h4>' + item.title + '</h4>';
           if (item.date) html += '<div class="date">' + item.date + '</div>';
           html += truncatedHtml(item.body);
+          if (item.listsHtml) html += item.listsHtml;
           if (item.images && item.images.length) html += '<div class="item-images">' + item.images.join('') + '</div>';
           div.innerHTML = html;
           container.appendChild(div);
@@ -695,7 +706,7 @@ function closeMobile() {
           var div = document.createElement('div');
           div.className = 'school-section';
           var imgHtml = (item.images && item.images.length) ? '<div class="item-images">' + item.images.join('') + '</div>' : '';
-          div.innerHTML = '<h4>' + item.title + '</h4>' + truncatedHtml(item.body) + imgHtml;
+          div.innerHTML = '<h4>' + item.title + '</h4>' + truncatedHtml(item.body) + (item.listsHtml || '') + imgHtml;
           sc.appendChild(div);
           observer.observe(div);
         });
@@ -710,7 +721,7 @@ function closeMobile() {
           var div = document.createElement('div');
           div.className = 'school-section';
           var imgHtml = (item.images && item.images.length) ? '<div class="item-images">' + item.images.join('') + '</div>' : '';
-          div.innerHTML = '<h4>' + item.title + '</h4>' + truncatedHtml(item.body) + imgHtml;
+          div.innerHTML = '<h4>' + item.title + '</h4>' + truncatedHtml(item.body) + (item.listsHtml || '') + imgHtml;
           sozc.appendChild(div);
           observer.observe(div);
         });
