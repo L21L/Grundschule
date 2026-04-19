@@ -220,6 +220,16 @@ header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.09)}
 /* Listen in Sektionen */
 .school-section ul,.school-section ol,.timeline-item ul,.timeline-item ol{padding-left:1.4rem;margin:.5rem 0;color:var(--text-light);font-size:.95rem;line-height:1.75}
 .school-section li,.timeline-item li{margin-bottom:.25rem}
+.school-section em,.timeline-item em{font-style:italic}
+.school-section strong,.timeline-item strong{font-weight:700}
+
+/* Aufklappbarer Inhaltsblock */
+.content-collapse{position:relative;max-height:260px;overflow:hidden;transition:max-height .45s ease}
+.content-collapse.open{max-height:9999px}
+.content-collapse::after{content:'';position:absolute;bottom:0;left:0;right:0;height:72px;background:linear-gradient(transparent,#c4ede9);pointer-events:none;transition:opacity .35s}
+.content-collapse.open::after{opacity:0}
+.content-toggle{margin-top:.6rem;background:none;border:none;color:var(--teal);font-weight:700;font-size:.88rem;cursor:pointer;padding:0;font-family:inherit;transition:color .2s}
+.content-toggle:hover{color:var(--green-700)}
 
 /* Read more/less */
 .text-preview{display:inline}
@@ -629,7 +639,7 @@ function closeMobile() {
                   currentItems.push({ title: '', body: text, date: '', images: [], blocks: [] });
                 } else {
                   last.body += (last.body ? ' ' : '') + text;
-                  last.blocks.push({ type: 'text', value: text });
+                  last.blocks.push({ type: 'text', value: text, html: el.innerHTML });
                 }
               }
             } else {
@@ -640,16 +650,22 @@ function closeMobile() {
       });
       if (currentSection) sections[currentSection] = currentItems;
 
+      var collapseIdx = 0;
       function renderBlocks(blocks) {
         if (!blocks || !blocks.length) return '';
         return blocks.map(function(b) {
           if (b.type === 'list') return b.html;
-          // Paragraphen die mit "…für" oder "…" beginnen als Unterüberschrift
-          if (/^[…·–\-]/.test(b.value)) {
-            return '<p style="font-weight:600;color:var(--teal);margin-top:.8rem">' + b.value + '</p>';
+          var content = b.html || b.value;
+          if (/^[…·–]/.test(b.value)) {
+            return '<p style="font-weight:600;color:var(--teal);margin-top:.8rem">' + content + '</p>';
           }
-          return '<p>' + b.value + '</p>';
+          return '<p>' + content + '</p>';
         }).join('');
+      }
+      function toggleCollapse(id, btn) {
+        var el = document.getElementById(id);
+        var open = el.classList.toggle('open');
+        btn.textContent = open ? 'weniger \u25B4' : 'mehr \u25BE';
       }
 
       var toggleId = 0;
@@ -730,7 +746,12 @@ function closeMobile() {
           var div = document.createElement('div');
           div.className = 'school-section';
           var imgHtml = (item.images && item.images.length) ? '<div class="item-images">' + item.images.join('') + '</div>' : '';
-          div.innerHTML = '<h4>' + item.title + '</h4>' + renderBlocks(item.blocks) + imgHtml;
+          var cid = 'collapse-' + (collapseIdx++);
+          var blocksHtml = renderBlocks(item.blocks);
+          div.innerHTML = '<h4>' + item.title + '</h4>' +
+            '<div class="content-collapse" id="' + cid + '">' + blocksHtml + '</div>' +
+            '<button class="content-toggle" onclick="toggleCollapse(\'' + cid + '\',this)">mehr \u25BE</button>' +
+            imgHtml;
           sozc.appendChild(div);
           observer.observe(div);
         });
