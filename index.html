@@ -90,7 +90,7 @@ header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.09)}
 .blob-2{width:300px;height:300px;background:radial-gradient(circle,var(--purple-400),var(--pink));bottom:-40px;left:-60px;animation:float 15s ease-in-out 3s infinite}
 .blob-3{width:180px;height:180px;background:radial-gradient(circle,var(--orange),var(--yellow));top:35%;left:55%;animation:float 10s ease-in-out 1s infinite}
 .blob-4{width:120px;height:120px;background:radial-gradient(circle,var(--coral),var(--orange));top:20%;right:25%;animation:float 9s ease-in-out 2s infinite;opacity:.12}
-@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-15px) scale(1.05)}66%{transform:translate(-10px,10px) scale(.97)}}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(40px,-35px) scale(1.08)}50%{transform:translate(-25px,20px) scale(.94)}75%{transform:translate(30px,35px) scale(1.06)}}
 
 /* Waves */
 .wave-divider{width:100%;overflow:hidden;line-height:0;position:relative;z-index:3}
@@ -103,6 +103,10 @@ header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.09)}
 .bg-green{background:linear-gradient(135deg,#c8f0c8 0%,#e0f5e0 100%)}
 .bg-purple{background:linear-gradient(135deg,#e8d0f5 0%,#f2e4f8 100%)}
 .bg-orange{background:linear-gradient(135deg,#ffe8c0 0%,#fff3e0 100%)}
+
+/* Teal section */
+.bg-teal{background:linear-gradient(135deg,#b2e8e4 0%,#d6f5f2 100%)}
+.label-teal{color:var(--teal)}
 
 /* Section labels – handschriftliche Wellenunterstreichung, kein Kasten */
 .section-label{display:inline-block;font-family:var(--font-display);font-size:1.85rem;font-weight:400;letter-spacing:.2px;margin-bottom:1.8rem;padding-bottom:8px;position:relative;background:none;border-radius:0;padding-left:0;padding-right:0;padding-top:0}
@@ -259,6 +263,7 @@ header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.09)}
   <a href="#schulleben" onclick="closeMobile()">Aktuelles</a>
   <a href="#schule" onclick="closeMobile()">Unsere Schule</a>
   <a href="#termine-section" onclick="closeMobile()">Termine</a>
+  <a href="#sozialarbeit" onclick="closeMobile()">Schulsozialarbeit</a>
   <a href="#kontakt" onclick="closeMobile()">Kontakt</a>
 </div>
 
@@ -278,6 +283,7 @@ header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.09)}
       <a href="#schulleben" data-section="schulleben">Aktuelles</a>
       <a href="#schule" data-section="schule">Unsere Schule</a>
       <a href="#termine-section" data-section="termine-section">Termine</a>
+      <a href="#sozialarbeit" data-section="sozialarbeit">Schulsozialarbeit</a>
       <a href="#kontakt" data-section="kontakt">Kontakt</a>
     </nav>
     <button class="burger" id="burger" aria-label="Men&uuml; &ouml;ffnen" onclick="toggleMobile()">
@@ -343,9 +349,21 @@ header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.09)}
   </div>
 </section>
 
-<!-- Wave: purple -> white -->
+<!-- Wave: purple -> teal -->
 <div class="wave-divider" style="background:#e8d0f5">
-  <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,40 C180,90 350,20 550,65 C750,110 900,25 1050,60 C1130,80 1180,45 1200,50 L1200,120 L0,120Z" fill="var(--warm-white)"/></svg>
+  <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,40 C180,90 350,20 550,65 C750,110 900,25 1050,60 C1130,80 1180,45 1200,50 L1200,120 L0,120Z" fill="#b2e8e4"/></svg>
+</div>
+
+<section class="section bg-teal" id="sozialarbeit">
+  <div class="section-inner">
+    <span class="section-label label-teal">Schulsozialarbeit</span>
+    <div id="sozialarbeit-container"></div>
+  </div>
+</section>
+
+<!-- Wave: teal -> white -->
+<div class="wave-divider" style="background:#b2e8e4">
+  <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,55 C150,100 300,20 500,65 C700,110 850,30 1000,60 C1100,80 1160,45 1200,50 L1200,120 L0,120Z" fill="var(--warm-white)"/></svg>
 </div>
 
 <!-- Quote -->
@@ -502,7 +520,7 @@ function closeMobile() {
     document.getElementById('header').classList.toggle('scrolled', window.scrollY > 40);
   });
 
-  var navSections = ['hero','schulleben','termine-section','schule','kontakt'];
+  var navSections = ['hero','schulleben','termine-section','schule','sozialarbeit','kontakt'];
   var navLinks = document.querySelectorAll('.desktop-nav a[data-section]');
   var sectionObserver = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
@@ -679,6 +697,21 @@ function closeMobile() {
           var imgHtml = (item.images && item.images.length) ? '<div class="item-images">' + item.images.join('') + '</div>' : '';
           div.innerHTML = '<h4>' + item.title + '</h4>' + truncatedHtml(item.body) + imgHtml;
           sc.appendChild(div);
+          observer.observe(div);
+        });
+      }
+
+      // Schulsozialarbeit
+      var sozKey = Object.keys(sections).find(function(k) { return k.includes('Schulsozialarbeit') || k.includes('Sozialarbeit'); });
+      if (sozKey) {
+        var sozc = document.getElementById('sozialarbeit-container');
+        sozc.innerHTML = '';
+        sections[sozKey].forEach(function(item) {
+          var div = document.createElement('div');
+          div.className = 'school-section';
+          var imgHtml = (item.images && item.images.length) ? '<div class="item-images">' + item.images.join('') + '</div>' : '';
+          div.innerHTML = '<h4>' + item.title + '</h4>' + truncatedHtml(item.body) + imgHtml;
+          sozc.appendChild(div);
           observer.observe(div);
         });
       }
