@@ -596,26 +596,22 @@ function closeMobile() {
           currentSection = text;
           currentItems = [];
         } else if (tag === 'H3') {
-          currentItems.push({ title: text, body: '', date: '', images: [], listsHtml: '' });
+          currentItems.push({ title: text, body: '', date: '', images: [], blocks: [] });
         } else if ((tag === 'UL' || tag === 'OL') && currentSection) {
-          // Aufzählungslisten erfassen
-          if (currentItems.length === 0) currentItems.push({ title: '', body: '', date: '', images: [], listsHtml: '' });
+          // Aufzählungslisten in der richtigen Reihenfolge erfassen
+          if (currentItems.length === 0) currentItems.push({ title: '', body: '', date: '', images: [], blocks: [] });
           var last = currentItems[currentItems.length - 1];
-          if (!last.listsHtml) last.listsHtml = '';
-          last.listsHtml += el.outerHTML;
+          last.blocks.push({ type: 'list', html: el.outerHTML });
         } else if ((tag === 'IMG' || tag === 'P') && currentSection) {
           // Bilder sammeln (standalone <img> oder <img> innerhalb <p>)
           var imgs = (tag === 'IMG') ? [el] : Array.from(el.querySelectorAll('img'));
           if (imgs.length > 0) {
-            // Sicherstellen dass es ein item gibt
-            if (currentItems.length === 0) currentItems.push({ title: '', body: '', date: '', images: [], listsHtml: '' });
+            if (currentItems.length === 0) currentItems.push({ title: '', body: '', date: '', images: [], blocks: [] });
             var last = currentItems[currentItems.length - 1];
             if (!last.images) last.images = [];
             imgs.forEach(function(img) { last.images.push(img.outerHTML); });
-            // Evtl. noch Text im selben Absatz speichern
             if (tag === 'P' && text) last.body += (last.body ? ' ' : '') + text;
           } else if (tag === 'P') {
-            // Normaler Text-Absatz (bisherige Logik)
             if (currentSection === 'Willkommen') {
               if (el.querySelector('strong') || text.length < 100) {
                 document.getElementById('hero-subheadline').textContent = text;
@@ -630,18 +626,31 @@ function closeMobile() {
               } else {
                 var isListSection = /Termine|Zahlen|Kontakt|ffnungszeiten/.test(currentSection);
                 if (isListSection && last.title === '' && last.body !== '') {
-                  currentItems.push({ title: '', body: text, date: '', images: [], listsHtml: '' });
+                  currentItems.push({ title: '', body: text, date: '', images: [], blocks: [] });
                 } else {
                   last.body += (last.body ? ' ' : '') + text;
+                  last.blocks.push({ type: 'text', value: text });
                 }
               }
             } else {
-              currentItems.push({ title: '', body: text, date: '', images: [], listsHtml: '' });
+              currentItems.push({ title: '', body: text, date: '', images: [], blocks: [{ type: 'text', value: text }] });
             }
           }
         }
       });
       if (currentSection) sections[currentSection] = currentItems;
+
+      function renderBlocks(blocks) {
+        if (!blocks || !blocks.length) return '';
+        return blocks.map(function(b) {
+          if (b.type === 'list') return b.html;
+          // Paragraphen die mit "…für" oder "…" beginnen als Unterüberschrift
+          if (/^[…·–\-]/.test(b.value)) {
+            return '<p style="font-weight:600;color:var(--teal);margin-top:.8rem">' + b.value + '</p>';
+          }
+          return '<p>' + b.value + '</p>';
+        }).join('');
+      }
 
       var toggleId = 0;
       function truncatedHtml(text) {
@@ -721,7 +730,7 @@ function closeMobile() {
           var div = document.createElement('div');
           div.className = 'school-section';
           var imgHtml = (item.images && item.images.length) ? '<div class="item-images">' + item.images.join('') + '</div>' : '';
-          div.innerHTML = '<h4>' + item.title + '</h4>' + truncatedHtml(item.body) + (item.listsHtml || '') + imgHtml;
+          div.innerHTML = '<h4>' + item.title + '</h4>' + renderBlocks(item.blocks) + imgHtml;
           sozc.appendChild(div);
           observer.observe(div);
         });
