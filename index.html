@@ -220,6 +220,9 @@ header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.09)}
 .item-images img{max-width:100%;height:auto;max-height:280px;object-fit:cover;border-radius:10px;display:block;cursor:zoom-in;transition:transform .2s,box-shadow .2s}
 .item-images img:hover{transform:scale(1.03);box-shadow:0 6px 20px rgba(0,0,0,.15)}
 .item-images img:only-child{max-width:min(100%,480px)}
+.item-images.thumbs img{max-height:96px;max-width:130px;object-fit:cover}
+.item-images.thumbs img:only-child{max-width:130px}
+.post-gallery{margin:.6rem 0 .2rem}
 
 /* Lightbox */
 #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9998;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:1.5rem}
@@ -437,7 +440,6 @@ header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.09)}
       <div class="breadcrumb"><a href="#home">← Startseite</a><span>/</span>Aktuelles</div>
       <span class="section-label label-purple" id="schulleben-label" style="margin-top:1rem;display:inline-block">Schulleben</span>
       <!-- Fotos aus bilder/schulleben_1.jpg etc. -->
-      <div class="section-photos" id="schulleben-fotos"></div>
       <div class="timeline" id="timeline-container"></div>
     </div>
   </section>
@@ -471,7 +473,6 @@ header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.09)}
     <div class="section-inner">
       <div class="breadcrumb"><a href="#home">← Startseite</a><span>/</span>Unsere Schule</div>
       <span class="section-label label-purple" id="schule-label" style="margin-top:1rem;display:inline-block">Unsere Schule</span>
-      <div class="section-photos" id="schule-fotos"></div>
       <div id="schule-container"></div>
     </div>
   </section>
@@ -492,7 +493,6 @@ header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.09)}
     <div class="section-inner">
       <div class="breadcrumb"><a href="#home">← Startseite</a><span>/</span>Schulsozialarbeit</div>
       <span class="section-label label-teal" style="margin-top:1rem;display:inline-block">Schulsozialarbeit</span>
-      <div class="section-photos" id="sozialarbeit-fotos"></div>
       <div id="sozialarbeit-container"></div>
     </div>
   </section>
@@ -710,9 +710,10 @@ function router(){
   window.scrollTo(0,0);
   document.getElementById('header').classList.remove('scrolled');
 
-  // Fotos laden (einmalig)
-  if(pageId!=='home'&&pageId!=='kontakt'){
-    loadSectionPhotos(pageId);
+  // Termine: weiterhin Sektions-Galerie (termine_1..). Andere Sektionen laden
+  // ihre Bilder pro Beitrag über die [ID]-Zuordnung aus der docx.
+  if(pageId==='termine'){
+    loadSectionPhotos('termine');
   }
 
   // Animationen neu triggern
@@ -735,6 +736,54 @@ document.addEventListener('click',function(e){
     // Browser setzt hash, hashchange-Event feuert
   }
 });
+
+// ── Beitrags-Galerie: bilder/<sektion>_<ID>_<NN> (Lücken bis _30 erlaubt) ──────
+var PHOTO_FORMATS_POST=['jpg','jpeg','png','webp','JPG','JPEG','PNG'];
+function loadPostImages(prefix,mountEl){
+  var found=[];var pending=0;var done=false;
+  function finish(){
+    if(done)return;done=true;
+    if(!found.length)return;
+    found.sort(function(a,b){return a.n-b.n;});
+    var grid=document.createElement('div');
+    grid.className='item-images thumbs post-gallery';
+    found.forEach(function(f){
+      var img=document.createElement('img');
+      img.src=f.src;img.alt='';img.loading='lazy';
+      grid.appendChild(img);
+    });
+    mountEl.appendChild(grid);
+  }
+  function tryOne(n){
+    var fmts=PHOTO_FORMATS_POST.slice();
+    (function nextFmt(){
+      if(!fmts.length){return;}
+      var fmt=fmts.shift();
+      var src='bilder/'+prefix+'_'+('0'+n).slice(-2)+'.'+fmt;
+      var img=new Image();
+      img.onload=function(){found.push({n:n,src:src});settle();};
+      img.onerror=function(){nextFmt();};
+      img.src=src;
+    })();
+  }
+  function settle(){pending--;if(pending<=0)finish();}
+  // 1..30 parallel probieren, Lücken erlaubt
+  pending=30;
+  for(var n=1;n<=30;n++){
+    (function(nn){
+      var fmts=PHOTO_FORMATS_POST.slice();
+      (function nextFmt(){
+        if(!fmts.length){settle();return;}
+        var fmt=fmts.shift();
+        var src='bilder/'+prefix+'_'+('0'+nn).slice(-2)+'.'+fmt;
+        var img=new Image();
+        img.onload=function(){found.push({n:nn,src:src});settle();};
+        img.onerror=function(){nextFmt();};
+        img.src=src;
+      })();
+    })(n);
+  }
+}
 
 // ── Fotogalerie aus bilder/-Ordner ───────────────────────────────────────────
 // Konvention: bilder/schulleben_1.jpg, bilder/schulleben_2.jpg, ...
@@ -832,7 +881,10 @@ var counterObserver=new IntersectionObserver(function(entries){
           if(currentSection)sections[currentSection]=currentItems;
           currentSection=text;currentItems=[];
         } else if(tag==='H3'){
-          currentItems.push({title:text,body:'',date:'',blocks:[]});
+          var picId=null;var cleanTitle=text;
+          var m=text.match(/\s*\[(\d{1,3})\]\s*$/);
+          if(m){picId=('00'+m[1]).slice(-3);cleanTitle=text.replace(/\s*\[\d{1,3}\]\s*$/,'').trim();}
+          currentItems.push({title:cleanTitle,picId:picId,body:'',date:'',blocks:[]});
         } else if((tag==='UL'||tag==='OL')&&currentSection){
           if(currentItems.length===0)currentItems.push({title:'',body:'',date:'',blocks:[]});
           currentItems[currentItems.length-1].blocks.push({type:'list',html:el.outerHTML});
@@ -900,6 +952,7 @@ var counterObserver=new IntersectionObserver(function(entries){
           html+=truncatedHtml(item.body);
           div.innerHTML=html;
           container.appendChild(div);
+          if(item.picId)loadPostImages('schulleben_'+item.picId,div);
           entryObserver.observe(div);
         });
       }
@@ -931,7 +984,9 @@ var counterObserver=new IntersectionObserver(function(entries){
         sections[schuleKey].forEach(function(item){
           var div=document.createElement('div');div.className='school-section';
           div.innerHTML='<h4>'+item.title+'</h4>'+truncatedHtml(item.body);
-          sc.appendChild(div);entryObserver.observe(div);
+          sc.appendChild(div);
+          if(item.picId)loadPostImages('schule_'+item.picId,div);
+          entryObserver.observe(div);
         });
       }
 
@@ -946,7 +1001,9 @@ var counterObserver=new IntersectionObserver(function(entries){
           div.innerHTML='<h4>'+item.title+'</h4>'+
             '<div class="content-collapse" id="'+cid+'">'+blocksHtml+'</div>'+
             '<button class="content-toggle" onclick="toggleCollapse(\''+cid+'\',this)">mehr \u25BE</button>';
-          sozc.appendChild(div);entryObserver.observe(div);
+          sozc.appendChild(div);
+          if(item.picId)loadPostImages('sozialarbeit_'+item.picId,div);
+          entryObserver.observe(div);
         });
       }
 
