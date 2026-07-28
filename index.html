@@ -737,12 +737,31 @@ document.addEventListener('click',function(e){
   }
 });
 
-// ── Beitrags-Galerie: bilder/<sektion>_<ID>_<NN> (Lücken bis _30 erlaubt) ──────
-var PHOTO_FORMATS_POST=['jpg','jpeg','png','webp','JPG','JPEG','PNG'];
+// ── Beitrags-Galerie aus bilder/bilder.json (kein Raten, kein Rate-Limit) ─────
+// bilder.json ist eine Liste aller vorhandenen Bilddateinamen im Ordner bilder/.
+// Beispiel: ["schulleben_136_01.jpg","schulleben_136_02.png","schule_002_01.jpg"]
+// Wird EINMAL geladen; jede Beitrags-Galerie schlägt darin nur nach.
+var IMAGE_LIST=null;               // Array der Dateinamen (ohne "bilder/")
+var imageListPromise=null;
+function ensureImageList(){
+  if(imageListPromise)return imageListPromise;
+  imageListPromise=fetch('bilder/bilder.json')
+    .then(function(r){return r.ok?r.json():[];})
+    .then(function(list){IMAGE_LIST=Array.isArray(list)?list:[];return IMAGE_LIST;})
+    .catch(function(){IMAGE_LIST=[];return IMAGE_LIST;});
+  return imageListPromise;
+}
+
 function loadPostImages(prefix,mountEl){
-  var found=[];var pending=0;var done=false;
-  function finish(){
-    if(done)return;done=true;
+  ensureImageList().then(function(list){
+    // Alle Dateien, die mit "<prefix>_" beginnen (z. B. schulleben_136_)
+    var re=new RegExp('^'+prefix.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'_(\\d{2,})\\.',
+                      'i');
+    var found=[];
+    list.forEach(function(name){
+      var m=name.match(re);
+      if(m)found.push({n:parseInt(m[1],10),src:'bilder/'+name});
+    });
     if(!found.length)return;
     found.sort(function(a,b){return a.n-b.n;});
     var grid=document.createElement('div');
@@ -753,86 +772,36 @@ function loadPostImages(prefix,mountEl){
       grid.appendChild(img);
     });
     mountEl.appendChild(grid);
-  }
-  function tryOne(n){
-    var fmts=PHOTO_FORMATS_POST.slice();
-    (function nextFmt(){
-      if(!fmts.length){return;}
-      var fmt=fmts.shift();
-      var src='bilder/'+prefix+'_'+('0'+n).slice(-2)+'.'+fmt;
-      var img=new Image();
-      img.onload=function(){found.push({n:n,src:src});settle();};
-      img.onerror=function(){nextFmt();};
-      img.src=src;
-    })();
-  }
-  function settle(){pending--;if(pending<=0)finish();}
-  // 1..30 parallel probieren, Lücken erlaubt
-  pending=30;
-  for(var n=1;n<=30;n++){
-    (function(nn){
-      var fmts=PHOTO_FORMATS_POST.slice();
-      (function nextFmt(){
-        if(!fmts.length){settle();return;}
-        var fmt=fmts.shift();
-        var src='bilder/'+prefix+'_'+('0'+nn).slice(-2)+'.'+fmt;
-        var img=new Image();
-        img.onload=function(){found.push({n:nn,src:src});settle();};
-        img.onerror=function(){nextFmt();};
-        img.src=src;
-      })();
-    })(n);
-  }
+  });
 }
 
-// ── Fotogalerie aus bilder/-Ordner ───────────────────────────────────────────
-// Konvention: bilder/schulleben_1.jpg, bilder/schulleben_2.jpg, ...
-// Unterstützte Formate: jpg, jpeg, png, webp (wird der Reihe nach probiert)
+// ── Sektions-Galerie (nur Termine) aus bilder/bilder.json ─────────────────────
+// Konvention: bilder/termine_01.jpg, termine_02.jpg, ... (zweistellig, Lücken ok)
 var photosLoaded={};
-var PHOTO_FORMATS=['jpg','jpeg','png','webp','JPG','PNG'];
 
 function loadSectionPhotos(sectionId){
   if(photosLoaded[sectionId])return;
   photosLoaded[sectionId]=true;
   var container=document.getElementById(sectionId+'-fotos');
   if(!container)return;
-
-  var found=[];
-  var n=1;
-
-  function tryFormat(formats,cb){
-    if(!formats.length){cb(null);return;}
-    var fmt=formats[0];
-    var src='bilder/'+sectionId+'_'+n+'.'+fmt;
-    var img=new Image();
-    img.onload=function(){cb(src);};
-    img.onerror=function(){tryFormat(formats.slice(1),cb);};
-    img.src=src;
-  }
-
-  function tryNext(){
-    if(n>40){render();return;} // max 40 Fotos pro Abschnitt
-    tryFormat(PHOTO_FORMATS,function(src){
-      if(src){found.push(src);n++;tryNext();}
-      else{render();}
+  ensureImageList().then(function(list){
+    var re=new RegExp('^'+sectionId+'_(\\d{2,})\\.','i');
+    var found=[];
+    list.forEach(function(name){
+      var m=name.match(re);
+      if(m)found.push({n:parseInt(m[1],10),src:'bilder/'+name});
     });
-  }
-
-  function render(){
     if(!found.length)return;
+    found.sort(function(a,b){return a.n-b.n;});
     var grid=document.createElement('div');
     grid.className='section-photos-grid';
-    found.forEach(function(src){
+    found.forEach(function(f){
       var img=document.createElement('img');
-      img.src=src;
-      img.alt='';
-      img.loading='lazy';
+      img.src=f.src;img.alt='';img.loading='lazy';
       grid.appendChild(img);
     });
     container.appendChild(grid);
-  }
-
-  tryNext();
+  });
 }
 
 // ── IntersectionObserver für Scroll-Animationen ──────────────────────────────
